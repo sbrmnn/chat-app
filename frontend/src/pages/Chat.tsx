@@ -42,9 +42,17 @@ export function Chat() {
   if (!character) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-20 text-center">
-        <JP className="text-2xl text-gold-400">見つかりません</JP>
-        <h1 className="mt-2 text-xl text-text-primary">Character not found</h1>
-        <Link to="/" className="mt-4 inline-block text-gold-400 underline">
+        <JP className="text-3xl font-black text-accent-red">見つかりません</JP>
+        <h1
+          className="mt-2 text-2xl font-black text-ink-900"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Character not found
+        </h1>
+        <Link
+          to="/"
+          className="mt-4 inline-block font-bold text-accent-red underline"
+        >
           Return home
         </Link>
       </main>
@@ -61,7 +69,6 @@ export function Chat() {
     }
     setMessages((m) => [...m, userMsg])
     setInput("")
-    // Stub: echo response. Real impl will hit /api/v1/chat/stream.
     setTimeout(() => {
       setMessages((m) => [
         ...m,
@@ -78,16 +85,14 @@ export function Chat() {
   return (
     <main className="mx-auto flex h-[calc(100svh-65px)] max-w-7xl flex-col md:grid md:grid-cols-[1.4fr_1fr] md:gap-4 md:p-4">
       {/* Avatar panel */}
-      <section className="relative flex flex-col border-b border-base-600 md:border md:border-base-600">
-        <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-gold-400/60 md:h-4 md:w-4" />
-        <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-gold-400/60 md:h-4 md:w-4" />
-        <span className="pointer-events-none absolute bottom-0 left-0 hidden h-4 w-4 border-b border-l border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute bottom-0 right-0 hidden h-4 w-4 border-b border-r border-gold-400/60 md:block" />
-
+      <section className="manga-panel relative flex flex-col overflow-hidden">
         <div
-          className="relative flex flex-1 overflow-hidden bg-gradient-to-b from-base-800 to-base-900"
+          className="relative flex flex-1 overflow-hidden bg-paper-50"
           style={{ minHeight: "240px" }}
         >
+          {/* Halftone background behind VRM */}
+          <div className="halftone pointer-events-none absolute inset-0 opacity-50" />
+
           <VrmViewer
             url={`/vrm/${character.id}.vrm`}
             kanji={character.kanji}
@@ -95,79 +100,77 @@ export function Chat() {
             characterName={character.name}
           />
 
-          {/* Top-left character info */}
-          <div className="absolute left-4 top-4 flex flex-col gap-0.5">
+          {/* Top-left character info — manga style */}
+          <div className="absolute left-3 top-3 flex flex-col gap-1.5">
             <Link
               to="/"
-              className="mb-2 text-[10px] tracking-[0.2em] text-text-secondary hover:text-gold-400"
+              className="manga-panel-sm bg-paper-50 px-2 py-1 text-[10px] font-black tracking-[0.15em] text-ink-900 hover:bg-ink-900 hover:text-paper-50"
             >
               ← BACK
             </Link>
-            <div className="flex items-baseline gap-2">
-              <span className="text-lg font-light tracking-[0.15em] text-text-primary md:text-xl">
-                {character.name}
-              </span>
-              <JP className="text-lg text-gold-400">{character.kanji}</JP>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-text-secondary">
-              <JP>{character.personality.jp}</JP>
-              <span className="text-text-muted">·</span>
-              <span>{character.personality.en}</span>
+            <div className="manga-panel-sm bg-paper-50 px-3 py-1.5">
+              <div className="flex items-baseline gap-2">
+                <span
+                  className="text-lg font-black tracking-[0.05em] text-ink-900 md:text-xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {character.name}
+                </span>
+                <JP className="text-lg font-black text-accent-red">
+                  {character.kanji}
+                </JP>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold">
+                <JP className="text-ink-700">{character.personality.jp}</JP>
+                <span className="text-ink-400">·</span>
+                <span className="text-ink-700">{character.personality.en}</span>
+              </div>
             </div>
           </div>
 
           {/* Top-right online status */}
-          <div className="absolute right-4 top-4 flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
-            <span className="text-[10px] tracking-[0.2em] text-teal-400">
+          <div className="absolute right-3 top-3 flex items-center gap-1.5 border-2 border-ink-900 bg-paper-50 px-2 py-0.5">
+            <span className="h-2 w-2 rounded-full bg-accent-red" />
+            <span className="text-[10px] font-bold tracking-[0.15em] text-ink-900">
               ONLINE
             </span>
           </div>
         </div>
 
         {/* Emotion strip */}
-        <div className="flex items-center justify-between border-t border-base-600 bg-base-800/50 px-4 py-2 text-xs">
+        <div className="flex items-center justify-between border-t-[2.5px] border-ink-900 bg-paper-100 px-4 py-2 text-xs font-bold">
           <div className="flex items-center gap-2">
-            <JP className="text-text-secondary">感情</JP>
-            <span className="text-text-muted">·</span>
+            <JP className="text-ink-700">感情</JP>
+            <span className="text-ink-400">·</span>
             <span className="text-emotion-happy">happy</span>
-            <span className="text-text-muted">·</span>
-            <span className="text-text-secondary">idle</span>
+            <span className="text-ink-400">·</span>
+            <span className="text-ink-700">idle</span>
           </div>
           <div className="hidden items-center gap-2 md:flex">
-            <span className="text-[10px] tracking-[0.2em] text-text-muted">
+            <span className="text-[10px] tracking-[0.15em] text-ink-500">
               VOICE
             </span>
-            <span className="text-text-secondary">{character.voice}</span>
+            <span className="text-ink-700">{character.voice}</span>
           </div>
         </div>
       </section>
 
       {/* Chat panel */}
-      <section className="relative flex flex-1 flex-col overflow-hidden md:border md:border-base-600">
-        <span className="pointer-events-none absolute left-0 top-0 hidden h-4 w-4 border-l border-t border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute right-0 top-0 hidden h-4 w-4 border-r border-t border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute bottom-0 left-0 hidden h-4 w-4 border-b border-l border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute bottom-0 right-0 hidden h-4 w-4 border-b border-r border-gold-400/60 md:block" />
-
+      <section className="manga-panel relative flex flex-1 flex-col overflow-hidden bg-paper-50">
         <div
           ref={scrollRef}
-          className="flex-1 overflow-y-auto px-4 py-4 md:px-6"
+          className="halftone flex-1 overflow-y-auto px-4 py-6 md:px-6"
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             {messages.map((msg) => (
-              <MessageBubble
-                key={msg.id}
-                message={msg}
-                accentColor={character.accentColor}
-              />
+              <MessageBubble key={msg.id} message={msg} />
             ))}
           </div>
         </div>
 
         <form
           onSubmit={handleSend}
-          className="border-t border-base-600 bg-base-800/40 p-3 md:p-4"
+          className="border-t-[2.5px] border-ink-900 bg-paper-100 p-3 md:p-4"
         >
           <div className="flex items-center gap-2">
             <input
@@ -175,16 +178,17 @@ export function Chat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message…"
-              className="flex-1 border border-base-500 bg-base-900/60 px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-gold-400 focus:outline-none"
+              className="flex-1 border-2 border-ink-900 bg-paper-50 px-3 py-2.5 text-sm font-medium text-ink-900 placeholder:text-ink-400 focus:bg-white focus:outline-none"
             />
             <button
               type="submit"
-              className="border border-gold-400 bg-transparent px-4 py-2.5 text-xs tracking-[0.2em] text-gold-400 transition-colors hover:bg-gold-400 hover:text-base-900"
+              className="border-[2.5px] border-ink-900 bg-accent-red px-4 py-2.5 text-xs font-black tracking-[0.2em] text-paper-50 shadow-[3px_3px_0_0_var(--color-ink-900)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_var(--color-ink-900)]"
+              style={{ fontFamily: "var(--font-display)" }}
             >
               SEND
             </button>
           </div>
-          <div className="mt-2 flex items-center justify-between text-[10px] tracking-[0.15em] text-text-muted">
+          <div className="mt-2 flex items-center justify-between text-[10px] font-bold tracking-[0.1em] text-ink-500">
             <span>
               <JP>送信</JP> · ENTER to send
             </span>
@@ -196,39 +200,29 @@ export function Chat() {
   )
 }
 
-function MessageBubble({
-  message,
-  accentColor,
-}: {
-  message: Message
-  accentColor: string
-}) {
+function MessageBubble({ message }: { message: Message }) {
   const isUser = message.role === "user"
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[80%] flex flex-col gap-1 ${
+        className={`flex max-w-[80%] flex-col gap-1.5 ${
           isUser ? "items-end" : "items-start"
         }`}
       >
         <div
-          className={`px-4 py-2.5 text-sm leading-relaxed ${
-            isUser
-              ? "border border-base-500 bg-base-700/60 text-text-primary"
-              : "border bg-base-800/60 text-text-primary"
+          className={`px-4 py-3 text-sm font-medium leading-relaxed ${
+            isUser ? "speech-bubble-me" : "speech-bubble-them"
           }`}
-          style={
-            !isUser
-              ? { borderColor: `${accentColor}66` }
-              : undefined
-          }
         >
           {message.text}
         </div>
         {!isUser && message.emotion && (
-          <span className="text-[10px] tracking-[0.2em] text-text-muted">
-            [ANIM: {message.emotion}]
+          <span
+            className="ml-2 -rotate-2 text-xs font-black tracking-[0.1em] text-accent-red"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            [{message.emotion.toUpperCase()}!]
           </span>
         )}
       </div>

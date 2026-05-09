@@ -6,51 +6,73 @@ type Props = {
   character: Character
 }
 
+const SOUND_EFFECTS: Record<string, string> = {
+  saki: "ピカッ",
+  yuki: "シーン",
+  hana: "キラキラ",
+  aoi: "ドキッ",
+  koharu: "ふんわり",
+  mei: "ワクワク",
+}
+
 export function CharacterCard({ character }: Props) {
+  const fx = SOUND_EFFECTS[character.id] ?? "！"
+
   return (
     <Link
       to={`/chat/${character.id}`}
-      className="group relative flex flex-col overflow-hidden border border-base-600 bg-base-800/60 transition-all hover:border-gold-400/60 hover:bg-base-700/60"
+      className="manga-panel group relative flex flex-col overflow-hidden transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_var(--color-ink-900)]"
     >
-      {/* Corner marks */}
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b border-l border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-gold-400/50" />
-
-      {/* VRM preview placeholder */}
+      {/* Avatar area — halftone gradient bg, dramatic kanji */}
       <div
-        className="relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b border-base-600 bg-gradient-to-b from-base-700 to-base-900"
-        style={{
-          backgroundImage: `radial-gradient(circle at 50% 30%, ${character.accentColor}22, transparent 70%)`,
-        }}
+        className="halftone relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b-[2.5px] border-ink-900 bg-paper-50"
       >
+        {/* Action lines burst behind kanji */}
+        <div className="action-lines pointer-events-none absolute inset-0 opacity-[0.07]" />
+
         <span
-          className="text-[140px] font-light leading-none opacity-30 transition-opacity group-hover:opacity-50"
+          className="relative text-[160px] font-black leading-none text-ink-900"
           translate="no"
           lang="ja"
-          style={{ color: character.accentColor }}
+          style={{
+            fontFamily: "var(--font-display)",
+            textShadow: `4px 4px 0 ${character.accentColor}, 8px 8px 0 var(--color-paper-200)`,
+          }}
         >
           {character.kanji}
         </span>
 
-        {/* Online indicator */}
+        {/* Sound effect — top right corner */}
+        <span
+          className="absolute right-3 top-3 -rotate-12 text-2xl font-black text-accent-red"
+          translate="no"
+          lang="ja"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          {fx}
+        </span>
+
+        {/* Online tag — looks like a manga sticker */}
         {character.online && (
-          <div className="absolute right-3 top-3 flex items-center gap-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inset-0 animate-ping rounded-full bg-teal-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-teal-400">
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 border-2 border-ink-900 bg-paper-50 px-2 py-0.5">
+            <span className="h-2 w-2 rounded-full bg-accent-red" />
+            <span className="text-[10px] font-bold tracking-[0.15em] text-ink-900">
               ONLINE
             </span>
           </div>
         )}
 
-        {/* Affinity stars */}
-        <div className="absolute bottom-3 left-3 flex gap-0.5 text-[10px] text-gold-400">
+        {/* Affinity stars — top left */}
+        <div className="absolute left-3 top-3 flex gap-0.5 text-sm">
           {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className={i < character.affinity ? "" : "opacity-25"}>
+            <span
+              key={i}
+              className={
+                i < character.affinity
+                  ? "text-accent-red"
+                  : "text-ink-400 opacity-40"
+              }
+            >
               ★
             </span>
           ))}
@@ -61,17 +83,22 @@ export function CharacterCard({ character }: Props) {
       <div className="flex flex-1 flex-col gap-3 p-4">
         {/* Name */}
         <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-medium tracking-[0.15em] text-text-primary">
+          <h3
+            className="text-xl font-black tracking-[0.05em] text-ink-900"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             {character.name}
           </h3>
-          <JP className="text-base text-gold-400">{character.kanji}</JP>
+          <JP className="text-2xl font-black text-accent-red">
+            {character.kanji}
+          </JP>
         </div>
 
         {/* Personality */}
-        <div className="flex items-baseline gap-2 text-xs">
-          <JP className="text-text-secondary">{character.personality.jp}</JP>
-          <span className="text-text-muted">·</span>
-          <span className="text-text-secondary">{character.personality.en}</span>
+        <div className="flex items-baseline gap-2 text-xs font-medium">
+          <JP className="text-ink-700">{character.personality.jp}</JP>
+          <span className="text-ink-400">·</span>
+          <span className="text-ink-700">{character.personality.en}</span>
         </div>
 
         {/* Trait badges */}
@@ -79,36 +106,36 @@ export function CharacterCard({ character }: Props) {
           {character.traits.map((trait) => (
             <span
               key={trait.en}
-              className="border border-base-500 px-2 py-0.5 text-[10px] tracking-wider text-text-secondary"
+              className="border-2 border-ink-900 bg-paper-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-ink-900"
             >
               <JP>{trait.jp}</JP>
-              <span className="mx-1 opacity-40">·</span>
+              <span className="mx-1 opacity-50">·</span>
               {trait.en}
             </span>
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-gold-400/30 via-base-500 to-transparent" />
-
-        {/* Latest message */}
-        <div className="flex flex-col gap-1 text-xs leading-relaxed">
-          <JP className="text-text-secondary">
+        {/* Latest message — manga speech bubble */}
+        <div className="speech-bubble-them mt-1 px-3 py-2.5">
+          <JP className="block text-xs font-bold leading-snug text-ink-900">
             「{character.latestMessage.jp}」
           </JP>
-          <span className="text-text-muted italic">
+          <span className="block text-[11px] italic text-ink-500">
             "{character.latestMessage.en}"
           </span>
         </div>
 
         {/* CTA */}
-        <div className="mt-auto flex items-center justify-between border-t border-base-600 pt-3">
-          <span className="text-[10px] tracking-[0.2em] text-text-muted">
+        <div className="mt-auto flex items-center justify-between border-t-2 border-ink-900 pt-3">
+          <span className="text-[10px] font-bold tracking-[0.15em] text-ink-500">
             {character.voice.toUpperCase()}
           </span>
-          <span className="flex items-center gap-1.5 text-[11px] tracking-[0.25em] text-gold-400 transition-colors group-hover:text-gold-300">
+          <span
+            className="flex items-center gap-1 text-sm font-black tracking-[0.1em] text-accent-red transition-transform group-hover:scale-110"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             CHAT
-            <span className="transition-transform group-hover:translate-x-0.5">
+            <span className="transition-transform group-hover:translate-x-1">
               →
             </span>
           </span>

@@ -1,46 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base layers — deep navy, not flat black */
-  --color-base-900: #0a0d1a;
-  --color-base-800: #0f1428;
-  --color-base-700: #141933;
-  --color-base-600: #1a2040;
-  --color-base-500: #232a4d;
+  /* Paper — warm off-white, like manga page stock */
+  --color-paper-50: #faf7ee;
+  --color-paper-100: #f4f1e8;
+  --color-paper-200: #ebe6d6;
+  --color-paper-300: #ddd5be;
 
-  /* Gold — primary accent (borders, dividers, active states) */
-  --color-gold-200: #ede0c4;
-  --color-gold-300: #dfc28e;
-  --color-gold-400: #c9a96e;
-  --color-gold-500: #a88a52;
+  /* Ink — pure black, like manga line art */
+  --color-ink-900: #0a0a0a;
+  --color-ink-800: #1a1a1a;
+  --color-ink-700: #2a2a2a;
+  --color-ink-500: #525252;
+  --color-ink-400: #737373;
 
-  /* Teal — secondary accent (emotion, voice, online) */
-  --color-teal-300: #a3ddd9;
-  --color-teal-400: #7ecec4;
-  --color-teal-500: #5aa8a0;
+  /* Red — single dramatic accent (sound effects, emphasis) */
+  --color-accent-red: #c8302d;
+  --color-accent-red-dark: #962220;
 
-  /* Text */
-  --color-text-primary: #f0ede8;
-  --color-text-secondary: #8a8fa8;
-  --color-text-muted: #4a5068;
+  /* Emotion semantic colors — desaturated for paper context */
+  --color-emotion-happy: #2a8b8b;
+  --color-emotion-angry: #c8302d;
+  --color-emotion-sad: #4a6c8e;
+  --color-emotion-surprised: #b58a2b;
+  --color-emotion-neutral: #525252;
 
-  /* Emotion semantic colors */
-  --color-emotion-happy: #7ecec4;
-  --color-emotion-angry: #e07a6a;
-  --color-emotion-sad: #7a9ac9;
-  --color-emotion-surprised: #c9a96e;
-  --color-emotion-neutral: #8a8fa8;
-
-  /* Typography */
+  /* Typography — manga-style display + clean body */
   --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Noto Serif JP", ui-serif, Georgia, serif;
+  --font-display: "Reggae One", "Noto Serif JP", ui-serif, Georgia, serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html {
-    background-color: var(--color-base-900);
-    color: var(--color-text-primary);
+    background-color: var(--color-paper-100);
+    color: var(--color-ink-900);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -49,58 +43,109 @@
   body {
     margin: 0;
     min-height: 100svh;
+    background-image:
+      /* Halftone dot screen, very subtle */
+      radial-gradient(
+        circle at 1px 1px,
+        rgba(10, 10, 10, 0.06) 1px,
+        transparent 0
+      );
+    background-size: 6px 6px;
   }
 
-  /* Subtle texture on the page background */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(
-      circle at 50% 0%,
-      rgba(201, 169, 110, 0.03) 0%,
-      transparent 50%
-    );
-    z-index: 0;
-  }
-
-  #root {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Japanese decorative text — slightly looser tracking, lighter weight */
   [lang="ja"] {
     letter-spacing: 0.05em;
-    font-weight: 300;
+    font-weight: 500;
+  }
+
+  /* Manga-style headings */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
   }
 }
 
-/* Decorative corner marks utility */
 @layer utilities {
-  .corner-marks {
-    position: relative;
+  /* Halftone background pattern */
+  .halftone {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(10, 10, 10, 0.18) 1.2px,
+      transparent 0
+    );
+    background-size: 5px 5px;
   }
-  .corner-marks::before,
-  .corner-marks::after {
+
+  .halftone-dense {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(10, 10, 10, 0.4) 1.5px,
+      transparent 0
+    );
+    background-size: 4px 4px;
+  }
+
+  /* Manga panel — thick black border + offset shadow */
+  .manga-panel {
+    border: 2.5px solid var(--color-ink-900);
+    box-shadow: 4px 4px 0 0 var(--color-ink-900);
+    background-color: var(--color-paper-50);
+  }
+
+  .manga-panel-sm {
+    border: 2px solid var(--color-ink-900);
+    box-shadow: 3px 3px 0 0 var(--color-ink-900);
+    background-color: var(--color-paper-50);
+  }
+
+  /* Speech bubble shapes */
+  .speech-bubble-them {
+    position: relative;
+    background-color: var(--color-paper-50);
+    border: 2.5px solid var(--color-ink-900);
+    border-radius: 18px;
+  }
+  .speech-bubble-them::before {
     content: "";
     position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 1px solid var(--color-gold-400);
-    opacity: 0.6;
+    bottom: -10px;
+    left: 24px;
+    width: 18px;
+    height: 18px;
+    background-color: var(--color-paper-50);
+    border-right: 2.5px solid var(--color-ink-900);
+    border-bottom: 2.5px solid var(--color-ink-900);
+    transform: rotate(45deg);
+    border-bottom-right-radius: 4px;
   }
-  .corner-marks::before {
-    top: 0;
-    left: 0;
-    border-right: none;
-    border-bottom: none;
+
+  .speech-bubble-me {
+    position: relative;
+    background-color: var(--color-ink-900);
+    color: var(--color-paper-50);
+    border: 2.5px solid var(--color-ink-900);
+    border-radius: 18px;
   }
-  .corner-marks::after {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
+  .speech-bubble-me::before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: 24px;
+    width: 18px;
+    height: 18px;
+    background-color: var(--color-ink-900);
+    transform: rotate(45deg);
+    border-bottom-right-radius: 4px;
+  }
+
+  /* Action lines — radial burst behind a focal point */
+  .action-lines {
+    background-image: repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      var(--color-ink-900) 0deg 1deg,
+      transparent 1deg 8deg
+    );
   }
 }

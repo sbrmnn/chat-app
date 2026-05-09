@@ -33,7 +33,7 @@ bin/dev               # starts both
 ```
 
 Frontend: http://localhost:5173
-Backend: http://localhost:3000
+Backend: http://localhost:3001 (3000 is commonly taken; we use 3001)
 
 ## API
 

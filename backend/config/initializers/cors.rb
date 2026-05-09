@@ -1,13 +1,15 @@
 # Cross-Origin Resource Sharing for the SPA frontend.
 # Locked to dev origins; add production origin via FRONTEND_ORIGIN env var.
 
+allowed_origins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  ENV["FRONTEND_ORIGIN"]
+].compact
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins(
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-      ENV["FRONTEND_ORIGIN"]
-    ).compact
+    origins(*allowed_origins)
 
     resource "/api/*",
       headers: :any,

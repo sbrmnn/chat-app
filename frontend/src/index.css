@@ -1,67 +1,84 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base layers — deep navy, not flat black */
-  --color-base-900: #0a0d1a;
-  --color-base-800: #0f1428;
-  --color-base-700: #141933;
-  --color-base-600: #1a2040;
-  --color-base-500: #232a4d;
+  /* Pure black foundation */
+  --color-void: #000000;
+  --color-deep-900: #050508;
+  --color-deep-800: #0a0a10;
+  --color-deep-700: #14141c;
+  --color-deep-600: #1f1f2a;
 
-  /* Gold — primary accent (borders, dividers, active states) */
-  --color-gold-200: #ede0c4;
-  --color-gold-300: #dfc28e;
-  --color-gold-400: #c9a96e;
-  --color-gold-500: #a88a52;
+  /* Neon red — primary aggression */
+  --color-neon-red: #ff003c;
+  --color-neon-red-dim: #b30029;
+  --color-neon-red-glow: #ff4d72;
 
-  /* Teal — secondary accent (emotion, voice, online) */
-  --color-teal-300: #a3ddd9;
-  --color-teal-400: #7ecec4;
-  --color-teal-500: #5aa8a0;
+  /* Electric cyan — secondary digital */
+  --color-neon-cyan: #00ffff;
+  --color-neon-cyan-dim: #00b3b3;
+  --color-neon-cyan-glow: #66ffff;
+
+  /* Magenta — tertiary accent */
+  --color-neon-magenta: #ff00ff;
+  --color-neon-magenta-dim: #b300b3;
+
+  /* Yellow — warning/highlight */
+  --color-neon-yellow: #ffd700;
 
   /* Text */
-  --color-text-primary: #f0ede8;
-  --color-text-secondary: #8a8fa8;
-  --color-text-muted: #4a5068;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #8a8a9c;
+  --color-text-muted: #4a4a5c;
 
-  /* Emotion semantic colors */
-  --color-emotion-happy: #7ecec4;
-  --color-emotion-angry: #e07a6a;
-  --color-emotion-sad: #7a9ac9;
-  --color-emotion-surprised: #c9a96e;
-  --color-emotion-neutral: #8a8fa8;
+  /* Emotion */
+  --color-emotion-happy: #00ffff;
+  --color-emotion-angry: #ff003c;
+  --color-emotion-sad: #4a6cff;
+  --color-emotion-surprised: #ffd700;
+  --color-emotion-neutral: #8a8a9c;
 
-  /* Typography */
-  --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Noto Serif JP", ui-serif, Georgia, serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  /* Typography — mono and tech */
+  --font-sans: "JetBrains Mono", "Noto Sans JP", ui-monospace, monospace;
+  --font-display: "Bebas Neue", "JetBrains Mono", "Noto Sans JP", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 @layer base {
   html {
-    background-color: var(--color-base-900);
+    background-color: var(--color-void);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     margin: 0;
     min-height: 100svh;
+    background:
+      /* Vertical scanlines */
+      repeating-linear-gradient(
+        180deg,
+        rgba(0, 255, 255, 0.025) 0px,
+        rgba(0, 255, 255, 0.025) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      /* Grid */
+      linear-gradient(rgba(255, 0, 60, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 0, 60, 0.04) 1px, transparent 1px),
+      var(--color-void);
+    background-size: 100% 3px, 40px 40px, 40px 40px, 100%;
+    background-attachment: fixed;
   }
 
-  /* Subtle texture on the page background */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background-image: radial-gradient(
-      circle at 50% 0%,
-      rgba(201, 169, 110, 0.03) 0%,
-      transparent 50%
-    );
+    background:
+      radial-gradient(at 20% 0%, rgba(255, 0, 60, 0.15) 0%, transparent 40%),
+      radial-gradient(at 80% 100%, rgba(0, 255, 255, 0.1) 0%, transparent 40%);
     z-index: 0;
   }
 
@@ -70,36 +87,142 @@
     z-index: 1;
   }
 
-  /* Japanese decorative text — slightly looser tracking, lighter weight */
   [lang="ja"] {
     letter-spacing: 0.05em;
-    font-weight: 300;
+    font-weight: 400;
+  }
+
+  /* Cyberpunk scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-deep-800);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-neon-red);
+    box-shadow: 0 0 8px var(--color-neon-red);
   }
 }
 
-/* Decorative corner marks utility */
 @layer utilities {
-  .corner-marks {
+  /* Neon glow text */
+  .glow-red {
+    color: var(--color-neon-red);
+    text-shadow:
+      0 0 4px var(--color-neon-red),
+      0 0 12px var(--color-neon-red),
+      0 0 20px rgba(255, 0, 60, 0.5);
+  }
+
+  .glow-cyan {
+    color: var(--color-neon-cyan);
+    text-shadow:
+      0 0 4px var(--color-neon-cyan),
+      0 0 12px var(--color-neon-cyan),
+      0 0 20px rgba(0, 255, 255, 0.5);
+  }
+
+  .glow-magenta {
+    color: var(--color-neon-magenta);
+    text-shadow:
+      0 0 4px var(--color-neon-magenta),
+      0 0 12px var(--color-neon-magenta);
+  }
+
+  /* Neon border boxes */
+  .neon-box-red {
+    border: 1px solid var(--color-neon-red);
+    box-shadow:
+      0 0 8px rgba(255, 0, 60, 0.5),
+      inset 0 0 8px rgba(255, 0, 60, 0.1);
+  }
+
+  .neon-box-cyan {
+    border: 1px solid var(--color-neon-cyan);
+    box-shadow:
+      0 0 8px rgba(0, 255, 255, 0.5),
+      inset 0 0 8px rgba(0, 255, 255, 0.1);
+  }
+
+  /* Glitch effect for headers */
+  .glitch {
     position: relative;
+    display: inline-block;
   }
-  .corner-marks::before,
-  .corner-marks::after {
-    content: "";
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
     position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 1px solid var(--color-gold-400);
-    opacity: 0.6;
-  }
-  .corner-marks::before {
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .glitch::before {
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+    color: var(--color-neon-red);
+    z-index: -1;
+    transform: translate(2px, 0);
+  }
+  .glitch::after {
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    color: var(--color-neon-cyan);
+    z-index: -2;
+    transform: translate(-2px, 0);
+  }
+
+  @keyframes glitch-anim-1 {
+    0%, 10% { transform: translate(2px, 0); opacity: 0.7; }
+    20%, 100% { transform: translate(0, 0); opacity: 0; }
+  }
+
+  @keyframes glitch-anim-2 {
+    0%, 5% { transform: translate(-2px, 0); opacity: 0.7; }
+    15%, 100% { transform: translate(0, 0); opacity: 0; }
+  }
+
+  /* Terminal cursor blink */
+  .cursor-blink::after {
+    content: "▊";
+    animation: blink 1s steps(1) infinite;
+    color: var(--color-neon-cyan);
+    margin-left: 4px;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Vertical kanji wallpaper */
+  .kanji-wall {
+    writing-mode: vertical-rl;
+    font-size: 200px;
+    line-height: 1;
+    color: rgba(255, 0, 60, 0.08);
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Corner brackets */
+  .corner-brackets::before,
+  .corner-brackets::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--color-neon-cyan);
+  }
+  .corner-brackets::before {
+    top: -2px;
+    left: -2px;
     border-right: none;
     border-bottom: none;
   }
-  .corner-marks::after {
-    bottom: 0;
-    right: 0;
+  .corner-brackets::after {
+    bottom: -2px;
+    right: -2px;
     border-left: none;
     border-top: none;
   }

@@ -10,37 +10,40 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-base-700/60 bg-base-900/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b-2 border-pink-300/60 bg-sky-50/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <Link to="/" className="group flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center border border-gold-400/60 text-gold-400 transition-colors group-hover:border-gold-300 group-hover:text-gold-300">
-            <JP className="text-lg">話</JP>
+          <div className="holo-shine flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg shadow-pink-500/30">
+            <JP className="text-lg font-bold drop-shadow">話</JP>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-medium tracking-[0.2em] text-text-primary">
-              CHAT-APP
+            <span
+              className="text-xl text-pink-500"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              chat-app ✨
             </span>
-            <JP className="text-[10px] text-text-secondary">
+            <JP className="text-[10px] font-medium text-lav-500">
               キャラクターチャット
             </JP>
           </div>
         </Link>
 
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-2">
           {navItems.map((item) => {
             const active = pathname === item.to
             return (
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex flex-col items-center px-3 py-1.5 text-[11px] tracking-[0.2em] transition-colors ${
+                className={`flex flex-col items-center rounded-full px-4 py-1.5 text-[11px] font-bold tracking-wider transition-all ${
                   active
-                    ? "text-gold-400"
-                    : "text-text-secondary hover:text-text-primary"
+                    ? "bg-pink-500 text-white shadow-md shadow-pink-500/30"
+                    : "text-lav-500 hover:bg-pink-100 hover:text-pink-500"
                 }`}
               >
                 <span>{item.en.toUpperCase()}</span>
-                <JP className="text-[9px] opacity-60">{item.jp}</JP>
+                <JP className="text-[9px] opacity-80">{item.jp}</JP>
               </Link>
             )
           })}

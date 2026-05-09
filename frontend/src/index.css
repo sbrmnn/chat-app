@@ -1,45 +1,49 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base layers — deep navy, not flat black */
-  --color-base-900: #0a0d1a;
-  --color-base-800: #0f1428;
-  --color-base-700: #141933;
-  --color-base-600: #1a2040;
-  --color-base-500: #232a4d;
+  /* Pastel sky base — soft, dreamy */
+  --color-sky-50: #fef0f9;
+  --color-sky-100: #fde4f4;
+  --color-sky-200: #f3d5ee;
+  --color-sky-300: #e0c4f0;
+  --color-sky-400: #c8a2ff;
 
-  /* Gold — primary accent (borders, dividers, active states) */
-  --color-gold-200: #ede0c4;
-  --color-gold-300: #dfc28e;
-  --color-gold-400: #c9a96e;
-  --color-gold-500: #a88a52;
+  /* Hot pink — primary accent */
+  --color-pink-300: #ffb3e0;
+  --color-pink-400: #ff8fd4;
+  --color-pink-500: #ff6ec7;
+  --color-pink-600: #e84baa;
 
-  /* Teal — secondary accent (emotion, voice, online) */
-  --color-teal-300: #a3ddd9;
-  --color-teal-400: #7ecec4;
-  --color-teal-500: #5aa8a0;
+  /* Electric cyan — secondary accent */
+  --color-cyan-300: #b3f0ff;
+  --color-cyan-400: #7fdbff;
+  --color-cyan-500: #4fc6f5;
 
-  /* Text */
-  --color-text-primary: #f0ede8;
-  --color-text-secondary: #8a8fa8;
-  --color-text-muted: #4a5068;
+  /* Lavender — tertiary */
+  --color-lav-300: #d8c5f5;
+  --color-lav-400: #c8a2ff;
+  --color-lav-500: #a87fea;
 
-  /* Emotion semantic colors */
-  --color-emotion-happy: #7ecec4;
-  --color-emotion-angry: #e07a6a;
-  --color-emotion-sad: #7a9ac9;
-  --color-emotion-surprised: #c9a96e;
-  --color-emotion-neutral: #8a8fa8;
+  /* Text — deep plum, not black */
+  --color-text-primary: #2d1b3d;
+  --color-text-secondary: #6b4d7a;
+  --color-text-muted: #a08aae;
 
-  /* Typography */
-  --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Noto Serif JP", ui-serif, Georgia, serif;
+  /* Emotion colors — pastel-tuned */
+  --color-emotion-happy: #ff8fd4;
+  --color-emotion-angry: #ff6ec7;
+  --color-emotion-sad: #7fdbff;
+  --color-emotion-surprised: #c8a2ff;
+  --color-emotion-neutral: #a08aae;
+
+  /* Typography — rounded, soft */
+  --font-sans: "M PLUS Rounded 1c", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Pacifico", "M PLUS Rounded 1c", cursive;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html {
-    background-color: var(--color-base-900);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -49,58 +53,121 @@
   body {
     margin: 0;
     min-height: 100svh;
+    background:
+      radial-gradient(at 20% 10%, #ffd1ee 0%, transparent 45%),
+      radial-gradient(at 80% 20%, #b3f0ff 0%, transparent 45%),
+      radial-gradient(at 50% 80%, #d8c5f5 0%, transparent 50%),
+      linear-gradient(135deg, #fef0f9 0%, #f3d5ee 50%, #fde4f4 100%);
+    background-attachment: fixed;
   }
 
-  /* Subtle texture on the page background */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(
-      circle at 50% 0%,
-      rgba(201, 169, 110, 0.03) 0%,
-      transparent 50%
-    );
-    z-index: 0;
-  }
-
-  #root {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Japanese decorative text — slightly looser tracking, lighter weight */
   [lang="ja"] {
-    letter-spacing: 0.05em;
-    font-weight: 300;
+    letter-spacing: 0.03em;
+    font-weight: 500;
+  }
+
+  /* Soft scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-sky-100);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-pink-300);
+    border-radius: 10px;
+    border: 2px solid var(--color-sky-100);
   }
 }
 
-/* Decorative corner marks utility */
 @layer utilities {
-  .corner-marks {
+  /* Glossy card with pastel gradient border */
+  .holo-card {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(253, 228, 244, 0.85) 100%
+    );
+    backdrop-filter: blur(12px);
+    border: 2px solid transparent;
+    background-clip: padding-box;
     position: relative;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(255, 110, 199, 0.15),
+      0 8px 32px rgba(127, 219, 255, 0.1);
   }
-  .corner-marks::before,
-  .corner-marks::after {
+
+  .holo-card::before {
     content: "";
     position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 1px solid var(--color-gold-400);
-    opacity: 0.6;
+    inset: -2px;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      #ff6ec7 0%,
+      #c8a2ff 50%,
+      #7fdbff 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
-  .corner-marks::before {
-    top: 0;
-    left: 0;
-    border-right: none;
-    border-bottom: none;
+
+  /* Holographic shimmer effect */
+  .holo-shine {
+    background: linear-gradient(
+      135deg,
+      #ff6ec7 0%,
+      #c8a2ff 25%,
+      #7fdbff 50%,
+      #c8a2ff 75%,
+      #ff6ec7 100%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 4s linear infinite;
   }
-  .corner-marks::after {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
+
+  @keyframes shimmer {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 200%; }
+  }
+
+  /* Sparkle decoration */
+  .sparkle::after {
+    content: "✦";
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    color: var(--color-pink-500);
+    font-size: 12px;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    50% { opacity: 0.4; transform: scale(0.8) rotate(180deg); }
+  }
+
+  /* Pastel button gradient */
+  .btn-pastel {
+    background: linear-gradient(135deg, #ff6ec7 0%, #c8a2ff 100%);
+    color: white;
+    border-radius: 999px;
+    box-shadow: 0 4px 0 0 #e84baa, 0 6px 20px rgba(255, 110, 199, 0.4);
+    transition: all 0.15s;
+  }
+
+  .btn-pastel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 0 #e84baa, 0 8px 24px rgba(255, 110, 199, 0.5);
+  }
+
+  .btn-pastel:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 0 #e84baa;
   }
 }

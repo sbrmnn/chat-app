@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+# Starts both the Rails API (port 3000) and the Vite dev server (port 5173).
+# Requires foreman: gem install foreman
+#
+# Frontend hits the backend via Vite's /api proxy — no CORS issues in dev.
+
+if ! command -v foreman >/dev/null 2>&1; then
+  echo "foreman not found. Install with: gem install foreman"
+  exit 1
+fi
+
+exec foreman start -f Procfile.dev "$@"

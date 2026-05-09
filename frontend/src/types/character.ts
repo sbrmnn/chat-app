@@ -1,0 +1,20 @@
+export type Personality = {
+  jp: string
+  en: string
+}
+
+export type Character = {
+  id: string
+  name: string
+  nameJp: string
+  kanji: string
+  personality: Personality
+  traits: { jp: string; en: string }[]
+  voice: string
+  greeting: { jp: string; en: string }
+  latestMessage: { jp: string; en: string }
+  affinity: number
+  online: boolean
+  vrmUrl?: string
+  accentColor: string
+}

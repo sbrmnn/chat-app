@@ -1,0 +1,11 @@
+# Netlify-style cache headers (also works on Cloudflare Pages).
+# VRM models and animation clips never change once shipped — cache aggressively.
+# If you need to rotate an asset, rename the file (e.g. saki-v2.vrm).
+
+/vrm/*
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: model/gltf-binary
+
+/animations/*
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: model/gltf-binary

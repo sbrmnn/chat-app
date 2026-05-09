@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Copies VRM models from a local source directory into frontend/public/vrm/.
+# Override the source by setting VRM_SOURCE_DIR.
+# In production these should be hosted on a CDN, not copied at deploy time.
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SRC="${VRM_SOURCE_DIR:-$HOME/Desktop/claude/anime-chat/backend/public/vrm}"
+DEST="$ROOT/frontend/public/vrm"
+
+CHARACTERS=(saki yuki hana aoi koharu mei)
+
+if [ ! -d "$SRC" ]; then
+  echo "Source directory not found: $SRC"
+  echo "Set VRM_SOURCE_DIR to the directory containing the .vrm files."
+  exit 1
+fi
+
+mkdir -p "$DEST"
+
+for c in "${CHARACTERS[@]}"; do
+  if [ -f "$SRC/$c.vrm" ]; then
+    cp "$SRC/$c.vrm" "$DEST/$c.vrm"
+    echo "✓ $c.vrm"
+  else
+    echo "✗ $c.vrm not found in $SRC"
+  fi
+done

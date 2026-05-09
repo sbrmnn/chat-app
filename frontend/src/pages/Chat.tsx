@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router"
 import { JP } from "../components/JP"
+import { VrmViewer } from "../components/vrm/VrmViewer"
 import { getCharacter } from "../data/characters"
 
 type Message = {
@@ -84,20 +85,15 @@ export function Chat() {
         <span className="pointer-events-none absolute bottom-0 right-0 hidden h-4 w-4 border-b border-r border-gold-400/60 md:block" />
 
         <div
-          className="relative flex flex-1 items-center justify-center overflow-hidden bg-gradient-to-b from-base-800 to-base-900"
-          style={{
-            minHeight: "240px",
-            backgroundImage: `radial-gradient(circle at 50% 40%, ${character.accentColor}1f, transparent 70%)`,
-          }}
+          className="relative flex flex-1 overflow-hidden bg-gradient-to-b from-base-800 to-base-900"
+          style={{ minHeight: "240px" }}
         >
-          <span
-            className="text-[180px] font-light leading-none opacity-30 md:text-[260px]"
-            translate="no"
-            lang="ja"
-            style={{ color: character.accentColor }}
-          >
-            {character.kanji}
-          </span>
+          <VrmViewer
+            url={`/vrm/${character.id}.vrm`}
+            kanji={character.kanji}
+            accentColor={character.accentColor}
+            characterName={character.name}
+          />
 
           {/* Top-left character info */}
           <div className="absolute left-4 top-4 flex flex-col gap-0.5">

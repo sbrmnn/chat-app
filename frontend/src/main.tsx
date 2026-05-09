@@ -14,9 +14,15 @@ function ChatLoading() {
   return (
     <div className="flex h-[calc(100svh-65px)] items-center justify-center">
       <div className="flex flex-col items-center gap-2">
-        <JP className="text-sm text-gold-400">読み込み中</JP>
-        <span className="text-[10px] tracking-[0.3em] text-text-muted">
-          LOADING
+        <JP className="text-base font-bold text-orange-400">読み込み中</JP>
+        <span
+          className="text-2xl text-brown-800"
+          style={{
+            fontFamily: "var(--font-display)",
+            letterSpacing: "0.15em",
+          }}
+        >
+          LOADING...
         </span>
       </div>
     </div>

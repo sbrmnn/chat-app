@@ -10,107 +10,119 @@ export function CharacterCard({ character }: Props) {
   return (
     <Link
       to={`/chat/${character.id}`}
-      className="group relative flex flex-col overflow-hidden border border-base-600 bg-base-800/60 transition-all hover:border-gold-400/60 hover:bg-base-700/60"
+      className="vintage-card group relative flex flex-col overflow-hidden transition-all hover:-translate-x-0.5 hover:-translate-y-0.5"
     >
-      {/* Corner marks */}
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b border-l border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-gold-400/50" />
-
-      {/* VRM preview placeholder */}
+      {/* Avatar area — warm tinted bg */}
       <div
-        className="relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b border-base-600 bg-gradient-to-b from-base-700 to-base-900"
+        className="grain relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b-2 border-brown-600"
         style={{
-          backgroundImage: `radial-gradient(circle at 50% 30%, ${character.accentColor}22, transparent 70%)`,
+          background: `linear-gradient(180deg, ${character.accentColor}22 0%, var(--color-cream-50) 100%)`,
         }}
       >
+        {/* Diagonal stripe header */}
+        <div className="stripes-warm pointer-events-none absolute inset-x-0 top-0 h-8" />
+
         <span
-          className="text-[140px] font-light leading-none opacity-30 transition-opacity group-hover:opacity-50"
+          className="text-[160px] font-bold leading-none transition-transform group-hover:scale-105"
           translate="no"
           lang="ja"
-          style={{ color: character.accentColor }}
+          style={{
+            fontFamily: "var(--font-display)",
+            color: character.accentColor,
+            textShadow: "3px 3px 0 var(--color-cream-200)",
+          }}
         >
           {character.kanji}
         </span>
 
-        {/* Online indicator */}
+        {/* Vintage stamp — top-right */}
         {character.online && (
-          <div className="absolute right-3 top-3 flex items-center gap-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inset-0 animate-ping rounded-full bg-teal-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-teal-400">
-              ONLINE
-            </span>
+          <div className="vintage-seal absolute right-3 top-3 -rotate-12 px-2 py-0.5 text-[9px] font-bold tracking-[0.15em]">
+            ONLINE
           </div>
         )}
 
         {/* Affinity stars */}
-        <div className="absolute bottom-3 left-3 flex gap-0.5 text-[10px] text-gold-400">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className={i < character.affinity ? "" : "opacity-25"}>
-              ★
-            </span>
-          ))}
+        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between border-t border-brown-600/30 bg-cream-50/80 px-2 py-1">
+          <span className="text-[10px] font-bold tracking-wider text-brown-700">
+            ★&nbsp;AFFINITY
+          </span>
+          <div className="flex gap-0.5 text-sm">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span
+                key={i}
+                className={i < character.affinity ? "text-mustard-400" : "text-brown-600/30"}
+              >
+                ★
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Card body */}
       <div className="flex flex-1 flex-col gap-3 p-4">
-        {/* Name */}
-        <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-medium tracking-[0.15em] text-text-primary">
-            {character.name}
-          </h3>
-          <JP className="text-base text-gold-400">{character.kanji}</JP>
+        {/* Name with subtitle */}
+        <div className="border-b-2 border-dotted border-brown-600/40 pb-2">
+          <div className="flex items-baseline justify-between">
+            <h3
+              className="text-2xl text-brown-800"
+              style={{
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.05em",
+              }}
+            >
+              {character.name}
+            </h3>
+            <JP className="text-2xl font-bold text-orange-400">
+              {character.kanji}
+            </JP>
+          </div>
+          <div className="flex items-baseline gap-2 text-xs font-medium">
+            <JP className="text-orange-400">{character.personality.jp}</JP>
+            <span className="text-brown-600">·</span>
+            <span className="italic text-brown-700">{character.personality.en}</span>
+          </div>
         </div>
 
-        {/* Personality */}
-        <div className="flex items-baseline gap-2 text-xs">
-          <JP className="text-text-secondary">{character.personality.jp}</JP>
-          <span className="text-text-muted">·</span>
-          <span className="text-text-secondary">{character.personality.en}</span>
-        </div>
-
-        {/* Trait badges */}
+        {/* Trait stamps */}
         <div className="flex flex-wrap gap-1.5">
           {character.traits.map((trait) => (
             <span
               key={trait.en}
-              className="border border-base-500 px-2 py-0.5 text-[10px] tracking-wider text-text-secondary"
+              className="border border-brown-600 bg-cream-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-brown-700"
             >
               <JP>{trait.jp}</JP>
-              <span className="mx-1 opacity-40">·</span>
+              <span className="mx-1 opacity-50">·</span>
               {trait.en}
             </span>
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-gold-400/30 via-base-500 to-transparent" />
-
-        {/* Latest message */}
-        <div className="flex flex-col gap-1 text-xs leading-relaxed">
-          <JP className="text-text-secondary">
-            「{character.latestMessage.jp}」
-          </JP>
-          <span className="text-text-muted italic">
-            "{character.latestMessage.en}"
+        {/* Latest message — quote box */}
+        <div className="relative border-l-2 border-orange-400 bg-cream-100/70 px-3 py-2">
+          <span className="absolute -left-1 top-1 text-2xl leading-none text-orange-400">
+            ❝
           </span>
+          <div className="pl-3 text-xs leading-relaxed">
+            <JP className="block font-medium text-brown-800">
+              {character.latestMessage.jp}
+            </JP>
+            <span className="block italic text-brown-600">
+              {character.latestMessage.en}
+            </span>
+          </div>
         </div>
 
         {/* CTA */}
-        <div className="mt-auto flex items-center justify-between border-t border-base-600 pt-3">
-          <span className="text-[10px] tracking-[0.2em] text-text-muted">
-            {character.voice.toUpperCase()}
+        <div className="mt-auto flex items-center justify-between border-t border-brown-600/40 pt-2">
+          <span className="text-[10px] font-bold tracking-[0.1em] text-brown-600">
+            {character.voice}
           </span>
-          <span className="flex items-center gap-1.5 text-[11px] tracking-[0.25em] text-gold-400 transition-colors group-hover:text-gold-300">
-            CHAT
-            <span className="transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
+          <span
+            className="flex items-center gap-1 bg-mustard-400 px-3 py-1 text-xs font-bold tracking-[0.15em] text-brown-800 transition-all group-hover:bg-orange-400 group-hover:text-cream-50"
+          >
+            CHAT →
           </span>
         </div>
       </div>

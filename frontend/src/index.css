@@ -1,106 +1,160 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base layers — deep navy, not flat black */
-  --color-base-900: #0a0d1a;
-  --color-base-800: #0f1428;
-  --color-base-700: #141933;
-  --color-base-600: #1a2040;
-  --color-base-500: #232a4d;
+  /* Warm cream paper — Showa magazine stock */
+  --color-cream-50: #fbf6e8;
+  --color-cream-100: #f4ead0;
+  --color-cream-200: #ecddb0;
+  --color-cream-300: #e0cb8e;
 
-  /* Gold — primary accent (borders, dividers, active states) */
-  --color-gold-200: #ede0c4;
-  --color-gold-300: #dfc28e;
-  --color-gold-400: #c9a96e;
-  --color-gold-500: #a88a52;
+  /* Mustard — primary accent */
+  --color-mustard-300: #e5b94e;
+  --color-mustard-400: #d99a2b;
+  --color-mustard-500: #b87a14;
 
-  /* Teal — secondary accent (emotion, voice, online) */
-  --color-teal-300: #a3ddd9;
-  --color-teal-400: #7ecec4;
-  --color-teal-500: #5aa8a0;
+  /* Burnt orange */
+  --color-orange-300: #e88c5a;
+  --color-orange-400: #d4673a;
+  --color-orange-500: #b04826;
+
+  /* Vintage navy */
+  --color-navy-700: #2c3a5e;
+  --color-navy-800: #1c2540;
+  --color-navy-900: #121828;
+
+  /* Brown — wood, ink */
+  --color-brown-600: #6b4d2e;
+  --color-brown-700: #4a3520;
+  --color-brown-800: #2d1f10;
+
+  /* Terracotta secondary */
+  --color-terra-400: #c5654a;
+  --color-terra-500: #a04a32;
 
   /* Text */
-  --color-text-primary: #f0ede8;
-  --color-text-secondary: #8a8fa8;
-  --color-text-muted: #4a5068;
+  --color-text-primary: #2d1f10;
+  --color-text-secondary: #6b4d2e;
+  --color-text-muted: #9d8266;
 
-  /* Emotion semantic colors */
-  --color-emotion-happy: #7ecec4;
-  --color-emotion-angry: #e07a6a;
-  --color-emotion-sad: #7a9ac9;
-  --color-emotion-surprised: #c9a96e;
-  --color-emotion-neutral: #8a8fa8;
+  /* Emotion */
+  --color-emotion-happy: #d99a2b;
+  --color-emotion-angry: #b04826;
+  --color-emotion-sad: #2c3a5e;
+  --color-emotion-surprised: #d4673a;
+  --color-emotion-neutral: #6b4d2e;
 
-  /* Typography */
-  --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Noto Serif JP", ui-serif, Georgia, serif;
+  /* Typography — vintage display + clean body */
+  --font-sans: "Shippori Mincho", "Noto Sans JP", ui-serif, Georgia, serif;
+  --font-display: "DotGothic16", "Shippori Mincho B1", "Noto Serif JP", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html {
-    background-color: var(--color-base-900);
+    background-color: var(--color-cream-100);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     margin: 0;
     min-height: 100svh;
+    background:
+      /* Subtle paper grain */
+      radial-gradient(
+        circle at 1px 1px,
+        rgba(75, 53, 32, 0.04) 0.6px,
+        transparent 0
+      ),
+      /* Warm radial */
+      radial-gradient(at 30% 20%, rgba(217, 154, 43, 0.08) 0%, transparent 50%),
+      radial-gradient(at 70% 80%, rgba(212, 103, 58, 0.05) 0%, transparent 50%),
+      var(--color-cream-100);
+    background-size: 4px 4px, 100%, 100%, 100%;
+    background-attachment: fixed;
   }
 
-  /* Subtle texture on the page background */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(
-      circle at 50% 0%,
-      rgba(201, 169, 110, 0.03) 0%,
-      transparent 50%
-    );
-    z-index: 0;
-  }
-
-  #root {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Japanese decorative text — slightly looser tracking, lighter weight */
   [lang="ja"] {
-    letter-spacing: 0.05em;
-    font-weight: 300;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  /* Vintage scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-cream-200);
+    border-left: 1px solid var(--color-brown-600);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-mustard-400);
+    border: 2px solid var(--color-cream-200);
   }
 }
 
-/* Decorative corner marks utility */
 @layer utilities {
-  .corner-marks {
-    position: relative;
+  /* Vintage card — beige paper with brown border */
+  .vintage-card {
+    background-color: var(--color-cream-50);
+    border: 1.5px solid var(--color-brown-600);
+    box-shadow:
+      2px 2px 0 0 var(--color-mustard-400),
+      4px 4px 0 0 rgba(75, 53, 32, 0.15);
   }
-  .corner-marks::before,
-  .corner-marks::after {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 1px solid var(--color-gold-400);
-    opacity: 0.6;
+
+  /* Diagonal stripe — like vintage Japanese commercial design */
+  .stripes-diag {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--color-mustard-400) 0px,
+      var(--color-mustard-400) 6px,
+      transparent 6px,
+      transparent 14px
+    );
   }
-  .corner-marks::before {
-    top: 0;
-    left: 0;
-    border-right: none;
-    border-bottom: none;
+
+  .stripes-warm {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(212, 103, 58, 0.08) 8px,
+      rgba(212, 103, 58, 0.08) 16px
+    );
   }
-  .corner-marks::after {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
+
+  /* Vintage badge — circular seal */
+  .vintage-seal {
+    background: var(--color-orange-400);
+    color: var(--color-cream-50);
+    border: 2px solid var(--color-cream-50);
+    box-shadow: 0 0 0 1.5px var(--color-orange-400);
+    border-radius: 999px;
+  }
+
+  /* Subtle grain overlay */
+  .grain {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(75, 53, 32, 0.06) 0.5px,
+      transparent 0
+    );
+    background-size: 3px 3px;
+  }
+
+  /* Vertical title text — vintage shop sign */
+  .vertical-text {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.15em;
+  }
+
+  /* Vintage inner border */
+  .double-border {
+    box-shadow:
+      inset 0 0 0 1.5px var(--color-brown-600),
+      inset 0 0 0 4px var(--color-cream-50),
+      inset 0 0 0 5.5px var(--color-brown-600);
   }
 }

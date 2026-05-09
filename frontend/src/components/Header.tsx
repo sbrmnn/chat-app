@@ -10,18 +10,24 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-base-700/60 bg-base-900/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b-2 border-brown-600 bg-cream-50/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <Link to="/" className="group flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center border border-gold-400/60 text-gold-400 transition-colors group-hover:border-gold-300 group-hover:text-gold-300">
-            <JP className="text-lg">話</JP>
+          <div className="vintage-seal flex h-11 w-11 items-center justify-center">
+            <JP className="text-xl font-bold">話</JP>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-medium tracking-[0.2em] text-text-primary">
-              CHAT-APP
+            <span
+              className="text-2xl text-brown-700"
+              style={{
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.05em",
+              }}
+            >
+              chat-app
             </span>
-            <JP className="text-[10px] text-text-secondary">
-              キャラクターチャット
+            <JP className="text-[10px] font-bold text-orange-400">
+              キャラクター喫茶
             </JP>
           </div>
         </Link>
@@ -33,14 +39,14 @@ export function Header() {
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex flex-col items-center px-3 py-1.5 text-[11px] tracking-[0.2em] transition-colors ${
+                className={`flex flex-col items-center border-2 px-4 py-1 text-[11px] font-bold tracking-[0.1em] transition-all ${
                   active
-                    ? "text-gold-400"
-                    : "text-text-secondary hover:text-text-primary"
+                    ? "border-brown-600 bg-mustard-400 text-brown-800"
+                    : "border-transparent text-brown-700 hover:border-brown-600 hover:bg-cream-200"
                 }`}
               >
                 <span>{item.en.toUpperCase()}</span>
-                <JP className="text-[9px] opacity-60">{item.jp}</JP>
+                <JP className="text-[9px] opacity-80">{item.jp}</JP>
               </Link>
             )
           })}

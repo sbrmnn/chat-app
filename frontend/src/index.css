@@ -125,6 +125,19 @@
 }
 
 @layer utilities {
+  /* Subtle paper-grain dot overlay — sits on top of an image and darkens
+     through with mix-blend-mode so colors stay intact. */
+  .paper-grain {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(74, 63, 58, 0.18) 0.5px,
+      transparent 0
+    );
+    background-size: 4px 4px;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
   /* Watercolor-bloom card — hand-drawn feel */
   .watercolor-card {
     background: rgba(250, 243, 224, 0.85);

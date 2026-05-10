@@ -58,6 +58,9 @@ export function Hero({ character }: Props) {
             style={{ objectPosition: "center 20%" }}
           />
 
+          {/* Subtle paper-grain texture over the image */}
+          <span className="paper-grain absolute inset-0" aria-hidden="true" />
+
           {/* Floating leaf */}
           <span className="absolute bottom-12 left-8 text-2xl sway">🍃</span>
         </div>

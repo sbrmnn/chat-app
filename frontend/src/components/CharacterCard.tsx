@@ -55,6 +55,9 @@ export function CharacterCard({ character }: Props) {
           style={{ objectPosition: "center top" }}
         />
 
+        {/* Subtle paper-grain texture over the image */}
+        <span className="paper-grain absolute inset-0" aria-hidden="true" />
+
         {/* Online — soft sage badge */}
         {character.online && (
           <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full border border-sage-400 bg-cream-50/90 px-2.5 py-1 backdrop-blur">

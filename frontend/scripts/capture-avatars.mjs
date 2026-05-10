@@ -20,19 +20,19 @@ const baseUrl = process.env.CAPTURE_BASE_URL ?? "http://localhost:5173"
 //   bg: { cx, cy, r, opacity } — radial gradient parameters as percentages
 const characters = [
   // Saki — warm cheerful sunrise from the upper-left
-  { id: "saki", accent: "#e07a6a", bg: { cx: 25, cy: 25, r: 75, opacity: 0.22 } },
+  { id: "saki", accent: "#e07a6a", bg: { cx: 25, cy: 25, r: 80, opacity: 0.55 } },
   // Yuki — calm sky settling from above
-  { id: "yuki", accent: "#7a9ac9", bg: { cx: 50, cy: 15, r: 80, opacity: 0.20 } },
+  { id: "yuki", accent: "#7a9ac9", bg: { cx: 50, cy: 15, r: 85, opacity: 0.50 } },
   // Hana — bright energetic center bloom
-  { id: "hana", accent: "#c9a96e", bg: { cx: 50, cy: 45, r: 60, opacity: 0.22 } },
+  { id: "hana", accent: "#c9a96e", bg: { cx: 50, cy: 45, r: 70, opacity: 0.55 } },
   // Aoi — soft afternoon teal glow from the right
-  { id: "aoi", accent: "#7ecec4", bg: { cx: 75, cy: 35, r: 70, opacity: 0.18 } },
+  { id: "aoi", accent: "#7ecec4", bg: { cx: 75, cy: 35, r: 75, opacity: 0.50 } },
   // Koharu — gentle warm hearth-light from the lower-left
-  { id: "koharu", accent: "#dfc28e", bg: { cx: 30, cy: 70, r: 75, opacity: 0.20 } },
+  { id: "koharu", accent: "#dfc28e", bg: { cx: 30, cy: 70, r: 80, opacity: 0.55 } },
   // Mei — fresh, lifted from below
-  { id: "mei", accent: "#a3ddd9", bg: { cx: 50, cy: 80, r: 70, opacity: 0.22 } },
+  { id: "mei", accent: "#a3ddd9", bg: { cx: 50, cy: 80, r: 75, opacity: 0.55 } },
   // Akira — dramatic spotlight from above, dignified
-  { id: "akira", accent: "#5a7d9a", bg: { cx: 50, cy: 20, r: 65, opacity: 0.20 } },
+  { id: "akira", accent: "#5a7d9a", bg: { cx: 50, cy: 20, r: 70, opacity: 0.50 } },
 ]
 
 const OUTPUT_SIZE = 800

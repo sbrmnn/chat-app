@@ -14,7 +14,7 @@ import { dirname, resolve } from "node:path"
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const outDir = resolve(__dirname, "../public/avatars")
 const baseUrl = process.env.CAPTURE_BASE_URL ?? "http://localhost:5173"
-const characterIds = ["saki", "yuki", "hana", "aoi", "koharu", "mei"]
+const characterIds = ["saki", "yuki", "hana", "aoi", "koharu", "mei", "akira"]
 
 async function main() {
   await mkdir(outDir, { recursive: true })

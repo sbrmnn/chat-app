@@ -9,7 +9,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${VRM_SOURCE_DIR:-$HOME/Desktop/claude/anime-chat/backend/public/vrm}"
 DEST="$ROOT/frontend/public/vrm"
 
-CHARACTERS=(saki yuki hana aoi koharu mei)
+CHARACTERS=(saki yuki hana aoi koharu mei akira)
 
 if [ ! -d "$SRC" ]; then
   echo "Source directory not found: $SRC"

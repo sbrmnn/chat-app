@@ -151,6 +151,31 @@ export const characters: Character[] = [
     imageUrl: "/avatars/mei.jpg",
     accentColor: "#a3ddd9",
   },
+  {
+    id: "akira",
+    name: "AKIRA",
+    nameJp: "アキラ",
+    kanji: "明",
+    personality: { jp: "落ち着き", en: "Composed" },
+    traits: [
+      { jp: "誠実", en: "Earnest" },
+      { jp: "聞き上手", en: "Listener" },
+      { jp: "穏やか", en: "Steady" },
+    ],
+    voice: "Soft tenor",
+    greeting: {
+      jp: "こんにちは。今日はどうでしたか？",
+      en: "Hello. How was your day?",
+    },
+    latestMessage: {
+      jp: "ゆっくりでいいですよ。",
+      en: "Take your time.",
+    },
+    affinity: 4,
+    online: true,
+    imageUrl: "/avatars/akira.jpg",
+    accentColor: "#5a7d9a",
+  },
 ]
 
 export function getCharacter(id: string): Character | undefined {

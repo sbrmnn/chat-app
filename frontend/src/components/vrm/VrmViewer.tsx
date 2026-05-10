@@ -212,9 +212,13 @@ export function VrmViewer({
     <div
       ref={containerRef}
       className="relative h-full w-full overflow-hidden"
-      style={{
-        backgroundImage: `radial-gradient(circle at 50% 40%, ${accentColor}1f, transparent 70%)`,
-      }}
+      style={
+        framing === "portrait"
+          ? undefined
+          : {
+              backgroundImage: `radial-gradient(circle at 50% 40%, ${accentColor}1f, transparent 70%)`,
+            }
+      }
     >
       {state !== "ready" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">

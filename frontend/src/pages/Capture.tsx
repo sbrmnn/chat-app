@@ -25,6 +25,19 @@ export function Capture() {
     return () => clearTimeout(t)
   }, [readyDelay])
 
+  // Force body to be fully transparent during capture so the canvas
+  // screenshot has clean alpha (no Ghibli watercolor blooms bleeding in).
+  useEffect(() => {
+    const prevBody = document.body.style.background
+    const prevHtml = document.documentElement.style.background
+    document.body.style.background = "transparent"
+    document.documentElement.style.background = "transparent"
+    return () => {
+      document.body.style.background = prevBody
+      document.documentElement.style.background = prevHtml
+    }
+  }, [])
+
   if (!character) return <div>Character not found.</div>
 
   return (
@@ -32,7 +45,7 @@ export function Capture() {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#faf3e0",
+        background: "transparent",
       }}
     >
       <VrmViewer

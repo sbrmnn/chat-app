@@ -68,15 +68,35 @@ async function main() {
     const canvas = await page.locator("canvas").first()
     const png = await canvas.screenshot({ type: "png", omitBackground: true })
 
-    // Auto-trim transparent borders. Higher threshold catches antialiased
-    // edge pixels that would otherwise leave a visible rectangular halo.
+    // Compute the visible-content bbox manually from the alpha channel.
+    // High threshold to ignore antialiased edges and stray near-transparent
+    // pixels that would otherwise pull the bbox off-center.
+    const { width: pw, height: ph } = await sharp(png).metadata()
+    const raw = await sharp(png).ensureAlpha().raw().toBuffer()
+    const ALPHA_THRESHOLD = 220 // near-opaque only; ignores faint hair tips
+                                // and glow that would otherwise inflate the bbox
+    let minX = pw, minY = ph, maxX = -1, maxY = -1
+    for (let y = 0; y < ph; y++) {
+      for (let x = 0; x < pw; x++) {
+        const alpha = raw[(y * pw + x) * 4 + 3]
+        if (alpha > ALPHA_THRESHOLD) {
+          if (x < minX) minX = x
+          if (x > maxX) maxX = x
+          if (y < minY) minY = y
+          if (y > maxY) maxY = y
+        }
+      }
+    }
+    if (maxX < 0) {
+      console.log("skipped (no visible content)")
+      continue
+    }
+    const cropW = maxX - minX + 1
+    const cropH = maxY - minY + 1
     const trimmed = await sharp(png)
-      .trim({
-        background: { r: 0, g: 0, b: 0, alpha: 0 },
-        threshold: 30,
-      })
+      .extract({ left: minX, top: minY, width: cropW, height: cropH })
       .toBuffer()
-    const trimMeta = await sharp(trimmed).metadata()
+    const trimMeta = { width: cropW, height: cropH }
 
     // Scale the character so its longest dimension fills 85% of the output —
     // leaves a comfortable margin around the figure.

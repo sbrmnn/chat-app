@@ -1,6 +1,12 @@
 import { lazy, StrictMode, Suspense } from "react"
 import { createRoot } from "react-dom/client"
-import { BrowserRouter, Route, Routes } from "react-router"
+import {
+  BrowserRouter,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router"
 import { Header } from "./components/Header"
 import { JP } from "./components/JP"
 import { Home } from "./pages/Home"
@@ -8,6 +14,9 @@ import "./index.css"
 
 const Chat = lazy(() =>
   import("./pages/Chat").then((m) => ({ default: m.Chat })),
+)
+const Capture = lazy(() =>
+  import("./pages/Capture").then((m) => ({ default: m.Capture })),
 )
 
 function ChatLoading() {
@@ -27,20 +36,42 @@ function ChatLoading() {
   )
 }
 
+/** Wrap pages that should show the site header. */
+function WithHeader() {
+  const { pathname } = useLocation()
+  // Capture pages are headless; never show chrome there.
+  if (pathname.startsWith("/capture/")) return <Outlet />
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  )
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/chat/:id"
-          element={
-            <Suspense fallback={<ChatLoading />}>
-              <Chat />
-            </Suspense>
-          }
-        />
+        <Route element={<WithHeader />}>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/chat/:id"
+            element={
+              <Suspense fallback={<ChatLoading />}>
+                <Chat />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/capture/:id"
+            element={
+              <Suspense fallback={null}>
+                <Capture />
+              </Suspense>
+            }
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   </StrictMode>,

@@ -20,6 +20,14 @@ type Props = {
   characterName: string
   /** Animation clip to play on loop. Defaults to "idle". */
   animation?: string
+  /** Fires once when the VRM model has finished loading. */
+  onReady?: () => void
+  /**
+   * Camera framing.
+   * - "default": full body, slight downward angle (used in Chat).
+   * - "portrait": tight on head + shoulders (used to capture avatars).
+   */
+  framing?: "default" | "portrait"
 }
 
 type LoadState = "loading" | "ready" | "error"
@@ -30,6 +38,8 @@ export function VrmViewer({
   accentColor,
   characterName,
   animation = "idle",
+  onReady,
+  framing = "default",
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [progress, setProgress] = useState(0)
@@ -45,21 +55,28 @@ export function VrmViewer({
     let mixer: THREE.AnimationMixer | undefined
 
     const scene = new THREE.Scene()
+    const isPortrait = framing === "portrait"
     const camera = new THREE.PerspectiveCamera(
-      30,
+      isPortrait ? 26 : 30,
       container.clientWidth / container.clientHeight,
       0.1,
       20,
     )
-    camera.position.set(0, 1.3, 1.6)
+    // Sensible defaults; refined after the VRM loads using the head bone.
+    if (isPortrait) {
+      camera.position.set(0, 1.45, 2.2)
+      camera.lookAt(0, 1.45, 0)
+    } else {
+      camera.position.set(0, 1.3, 1.6)
+    }
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
       powerPreference: "high-performance",
     })
-    renderer.setSize(container.clientWidth, container.clientHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(container.clientWidth, container.clientHeight)
     renderer.outputColorSpace = THREE.SRGBColorSpace
     container.appendChild(renderer.domElement)
 
@@ -101,10 +118,49 @@ export function VrmViewer({
         const loadedVrm = gltf.userData.vrm as VRM
         VRMUtils.removeUnnecessaryVertices(gltf.scene)
         VRMUtils.combineSkeletons(gltf.scene)
-        loadedVrm.scene.rotation.y = Math.PI
+
+        // VRM 0.x faces +Z (away from camera); rotate 180° to face -Z.
+        // VRM 1.0 already faces -Z. Detect via meta.metaVersion.
+        const meta = loadedVrm.meta as unknown as Record<string, unknown> | null
+        if (meta?.metaVersion === "0") {
+          loadedVrm.scene.rotation.y = Math.PI
+        }
+
+        // Center the model. Use the head bone for X/Z (the body's true
+        // centerline) — bbox center can be skewed by asymmetric hair, sleeves,
+        // accessories, etc. Use bbox min.y to put feet at y=0.
+        loadedVrm.scene.updateMatrixWorld(true)
+        const head = loadedVrm.humanoid?.getNormalizedBoneNode("head")
+        const headWorld = new THREE.Vector3()
+        if (head) {
+          head.getWorldPosition(headWorld)
+          loadedVrm.scene.position.x -= headWorld.x
+          loadedVrm.scene.position.z -= headWorld.z
+        }
+        const bounds = new THREE.Box3().setFromObject(loadedVrm.scene)
+        if (!bounds.isEmpty()) {
+          loadedVrm.scene.position.y -= bounds.min.y
+        }
+        loadedVrm.scene.updateMatrixWorld(true)
+
         scene.add(loadedVrm.scene)
         vrm = loadedVrm
+
+        if (isPortrait) {
+          if (head) {
+            head.getWorldPosition(headWorld)
+            // Aim slightly below the head bone so eyes sit in the upper third.
+            const aimY = headWorld.y - 0.10
+            // Pull the camera back so asymmetric hair/clothing has room to
+            // breathe; cards will use object-position to align consistently.
+            camera.position.set(0, aimY, 2.2)
+            camera.lookAt(0, aimY, 0)
+            camera.updateProjectionMatrix()
+          }
+        }
+
         setState("ready")
+        onReady?.()
         await loadAnimation(loadedVrm)
       },
       (event) => {
@@ -150,7 +206,7 @@ export function VrmViewer({
       renderer.dispose()
       renderer.domElement.remove()
     }
-  }, [url, animation])
+  }, [url, animation, framing])
 
   return (
     <div

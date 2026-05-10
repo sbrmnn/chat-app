@@ -46,18 +46,14 @@ export function CharacterCard({ character }: Props) {
           {accent}
         </span>
 
-        <span
-          className="text-[150px] leading-none transition-transform group-hover:scale-105"
-          translate="no"
-          lang="ja"
-          style={{
-            fontFamily: "var(--font-display)",
-            color: character.accentColor,
-            textShadow: `0 4px 16px ${character.accentColor}44`,
-          }}
-        >
-          {character.kanji}
-        </span>
+        <img
+          src={character.imageUrl}
+          alt={`${character.name} portrait`}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+          style={{ objectPosition: "center top" }}
+        />
 
         {/* Online — soft sage badge */}
         {character.online && (

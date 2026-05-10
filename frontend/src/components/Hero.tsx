@@ -50,18 +50,13 @@ export function Hero({ character }: Props) {
           {/* Grass at bottom */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-sage-300/40 to-transparent" />
 
-          <span
-            className="relative text-[280px] leading-none"
-            translate="no"
-            lang="ja"
-            style={{
-              fontFamily: "var(--font-display)",
-              color: character.accentColor,
-              textShadow: `0 8px 32px ${character.accentColor}66, 0 0 80px ${character.accentColor}33`,
-            }}
-          >
-            {character.kanji}
-          </span>
+          <img
+            src={character.imageUrl}
+            alt={`${character.name} portrait`}
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "center 20%" }}
+          />
 
           {/* Floating leaf */}
           <span className="absolute bottom-12 left-8 text-2xl sway">🍃</span>

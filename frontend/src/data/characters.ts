@@ -23,6 +23,7 @@ export const characters: Character[] = [
     },
     affinity: 4,
     online: true,
+    imageUrl: "/avatars/saki.jpg",
     accentColor: "#e07a6a",
   },
   {
@@ -47,6 +48,7 @@ export const characters: Character[] = [
     },
     affinity: 3,
     online: true,
+    imageUrl: "/avatars/yuki.jpg",
     accentColor: "#7a9ac9",
   },
   {
@@ -71,6 +73,7 @@ export const characters: Character[] = [
     },
     affinity: 5,
     online: true,
+    imageUrl: "/avatars/hana.jpg",
     accentColor: "#c9a96e",
   },
   {
@@ -95,6 +98,7 @@ export const characters: Character[] = [
     },
     affinity: 3,
     online: true,
+    imageUrl: "/avatars/aoi.jpg",
     accentColor: "#7ecec4",
   },
   {
@@ -119,6 +123,7 @@ export const characters: Character[] = [
     },
     affinity: 4,
     online: true,
+    imageUrl: "/avatars/koharu.jpg",
     accentColor: "#dfc28e",
   },
   {
@@ -143,6 +148,7 @@ export const characters: Character[] = [
     },
     affinity: 4,
     online: true,
+    imageUrl: "/avatars/mei.jpg",
     accentColor: "#a3ddd9",
   },
 ]

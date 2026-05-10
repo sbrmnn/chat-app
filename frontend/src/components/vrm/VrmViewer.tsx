@@ -63,12 +63,12 @@ export function VrmViewer({
     renderer.outputColorSpace = THREE.SRGBColorSpace
     container.appendChild(renderer.domElement)
 
-    // Lighting — soft ambient + key light + warm gold rim
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7))
-    const key = new THREE.DirectionalLight(0xffffff, 0.9)
+    // Lighting — bright clean ambient + cool blue rim
+    scene.add(new THREE.AmbientLight(0xffffff, 0.95))
+    const key = new THREE.DirectionalLight(0xffffff, 0.7)
     key.position.set(1, 2, 1)
     scene.add(key)
-    const rim = new THREE.DirectionalLight(0xc9a96e, 0.4)
+    const rim = new THREE.DirectionalLight(0xa5c4ff, 0.4)
     rim.position.set(-1, 1, -1)
     scene.add(rim)
 
@@ -173,16 +173,16 @@ export function VrmViewer({
 
           {state === "loading" && (
             <div className="absolute bottom-8 flex flex-col items-center gap-2">
-              <div className="h-px w-32 overflow-hidden bg-base-700">
+              <div className="h-1 w-32 overflow-hidden rounded-full bg-white/40 backdrop-blur">
                 <div
-                  className="h-full transition-all duration-200"
+                  className="h-full rounded-full transition-all duration-200"
                   style={{
                     width: `${progress}%`,
-                    backgroundColor: accentColor,
+                    backgroundColor: "var(--color-accent-500)",
                   }}
                 />
               </div>
-              <div className="flex items-center gap-2 text-[10px] tracking-[0.2em] text-text-secondary">
+              <div className="flex items-center gap-2 text-[10px] font-semibold text-text-secondary">
                 <JP>読み込み中</JP>
                 <span className="text-text-muted">·</span>
                 <span>{progress}%</span>
@@ -192,10 +192,10 @@ export function VrmViewer({
 
           {state === "error" && (
             <div className="absolute bottom-8 flex flex-col items-center gap-1 text-center">
-              <JP className="text-xs text-text-secondary">
+              <JP className="text-xs font-semibold text-text-secondary">
                 読み込みに失敗しました
               </JP>
-              <span className="text-[10px] tracking-[0.15em] text-text-muted">
+              <span className="text-[10px] font-medium text-text-muted">
                 Failed to load {characterName}'s model
               </span>
             </div>

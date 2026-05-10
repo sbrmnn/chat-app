@@ -8,34 +8,33 @@ type Props = {
 
 export function Hero({ character }: Props) {
   return (
-    <section className="relative overflow-hidden border border-base-600 bg-base-800/40">
-      {/* Corner marks */}
-      <span className="pointer-events-none absolute left-0 top-0 h-4 w-4 border-l border-t border-gold-400/60" />
-      <span className="pointer-events-none absolute right-0 top-0 h-4 w-4 border-r border-t border-gold-400/60" />
-      <span className="pointer-events-none absolute bottom-0 left-0 h-4 w-4 border-b border-l border-gold-400/60" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-4 w-4 border-b border-r border-gold-400/60" />
-
-      {/* Featured tag */}
-      <div className="absolute left-6 top-6 z-10 flex flex-col text-left">
-        <span className="text-[10px] tracking-[0.4em] text-gold-400">
-          FEATURED
+    <section className="glass iridescent relative overflow-hidden">
+      {/* Featured pill */}
+      <div className="glass-strong absolute left-6 top-6 z-10 flex items-center gap-2 rounded-full px-3 py-1.5">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent-500" />
+        <span className="text-[11px] font-semibold tracking-wide text-text-primary">
+          Featured
         </span>
-        <JP className="text-[10px] text-text-secondary">今日のおすすめ</JP>
+        <span className="text-text-muted">·</span>
+        <JP className="text-[10px] font-medium text-text-secondary">今日のおすすめ</JP>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-6 p-6 pt-16 md:p-10 md:pt-16">
-        {/* VRM placeholder */}
+      <div className="grid grid-cols-1 gap-6 p-6 pt-20 md:grid-cols-[1fr_1.2fr] md:gap-8 md:p-10 md:pt-20">
+        {/* Avatar */}
         <div
-          className="relative flex aspect-square items-center justify-center overflow-hidden border border-base-500 bg-gradient-to-br from-base-700 to-base-900"
+          className="glass-strong relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl"
           style={{
-            backgroundImage: `radial-gradient(circle at 50% 40%, ${character.accentColor}33, transparent 70%)`,
+            background: `radial-gradient(circle at 50% 40%, ${character.accentColor}55 0%, rgba(255, 255, 255, 0.3) 60%, ${character.accentColor}22 100%)`,
           }}
         >
           <span
-            className="text-[280px] font-light leading-none opacity-40"
+            className="text-[260px] font-light leading-none"
             translate="no"
             lang="ja"
-            style={{ color: character.accentColor }}
+            style={{
+              color: character.accentColor,
+              textShadow: `0 16px 48px ${character.accentColor}77, 0 0 120px ${character.accentColor}44`,
+            }}
           >
             {character.kanji}
           </span>
@@ -44,46 +43,47 @@ export function Hero({ character }: Props) {
         {/* Info */}
         <div className="flex flex-col justify-center gap-5">
           <div className="flex items-baseline gap-4">
-            <h1 className="text-4xl font-light tracking-[0.15em] text-text-primary md:text-5xl">
+            <h1 className="text-5xl font-bold tracking-tight text-text-primary md:text-6xl">
               {character.name}
             </h1>
-            <JP className="text-3xl text-gold-400 md:text-4xl">
+            <JP className="text-4xl font-semibold text-accent-500 md:text-5xl">
               {character.kanji}
             </JP>
           </div>
 
-          <div className="flex items-center gap-3 text-sm">
-            <JP className="text-text-secondary">{character.personality.jp}</JP>
-            <span className="text-text-muted">·</span>
-            <span className="text-text-secondary">
-              {character.personality.en}
+          <div className="flex flex-wrap items-center gap-2 text-sm font-medium">
+            <span className="glass-subtle rounded-full px-3 py-1">
+              <JP className="text-text-primary">{character.personality.jp}</JP>
+              <span className="mx-1.5 text-text-muted">·</span>
+              <span className="text-text-primary">{character.personality.en}</span>
             </span>
             {character.online && (
-              <span className="ml-2 flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
-                <span className="text-[10px] tracking-[0.2em] text-teal-400">
-                  ONLINE
+              <span className="glass-subtle flex items-center gap-1.5 rounded-full px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-emotion-happy" />
+                <span className="text-[11px] font-semibold text-text-primary">
+                  Online
                 </span>
               </span>
             )}
           </div>
 
-          <blockquote className="border-l-2 border-gold-400/60 pl-4">
-            <JP className="block text-lg text-text-primary md:text-xl">
-              「{character.greeting.jp}」
+          {/* Greeting — frosted speech card */}
+          <div className="glass-subtle rounded-2xl rounded-bl-sm p-5">
+            <JP className="block text-xl font-medium text-text-primary">
+              {character.greeting.jp}
             </JP>
             <span className="mt-1 block text-sm italic text-text-secondary">
-              "{character.greeting.en}"
+              {character.greeting.en}
             </span>
-          </blockquote>
+          </div>
 
           <Link
             to={`/chat/${character.id}`}
-            className="group inline-flex w-fit items-center gap-3 border border-gold-400 px-6 py-3 text-sm tracking-[0.3em] text-gold-400 transition-all hover:bg-gold-400 hover:text-base-900"
+            className="btn-primary group inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold tracking-tight"
           >
-            <span>START CHAT</span>
-            <JP className="text-xs opacity-80">チャットする</JP>
-            <span className="transition-transform group-hover:translate-x-1">
+            <span>Start chat</span>
+            <JP className="text-xs opacity-90">チャットする</JP>
+            <span className="transition-transform group-hover:translate-x-0.5">
               →
             </span>
           </Link>

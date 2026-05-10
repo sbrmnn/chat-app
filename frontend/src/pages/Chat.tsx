@@ -42,9 +42,16 @@ export function Chat() {
   if (!character) {
     return (
       <main className="mx-auto max-w-2xl px-4 py-20 text-center">
-        <JP className="text-2xl text-gold-400">見つかりません</JP>
-        <h1 className="mt-2 text-xl text-text-primary">Character not found</h1>
-        <Link to="/" className="mt-4 inline-block text-gold-400 underline">
+        <JP className="text-2xl font-semibold text-text-secondary">
+          見つかりません
+        </JP>
+        <h1 className="mt-2 text-3xl font-bold text-text-primary">
+          Character not found
+        </h1>
+        <Link
+          to="/"
+          className="mt-4 inline-block font-semibold text-accent-500 underline"
+        >
           Return home
         </Link>
       </main>
@@ -61,7 +68,6 @@ export function Chat() {
     }
     setMessages((m) => [...m, userMsg])
     setInput("")
-    // Stub: echo response. Real impl will hit /api/v1/chat/stream.
     setTimeout(() => {
       setMessages((m) => [
         ...m,
@@ -76,17 +82,15 @@ export function Chat() {
   }
 
   return (
-    <main className="mx-auto flex h-[calc(100svh-65px)] max-w-7xl flex-col md:grid md:grid-cols-[1.4fr_1fr] md:gap-4 md:p-4">
+    <main className="mx-auto flex h-[calc(100svh-92px)] max-w-7xl flex-col px-3 md:grid md:grid-cols-[1.4fr_1fr] md:gap-4 md:px-6 md:pb-6">
       {/* Avatar panel */}
-      <section className="relative flex flex-col border-b border-base-600 md:border md:border-base-600">
-        <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-gold-400/60 md:h-4 md:w-4" />
-        <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-gold-400/60 md:h-4 md:w-4" />
-        <span className="pointer-events-none absolute bottom-0 left-0 hidden h-4 w-4 border-b border-l border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute bottom-0 right-0 hidden h-4 w-4 border-b border-r border-gold-400/60 md:block" />
-
+      <section className="glass iridescent relative flex flex-col overflow-hidden">
         <div
-          className="relative flex flex-1 overflow-hidden bg-gradient-to-b from-base-800 to-base-900"
-          style={{ minHeight: "240px" }}
+          className="relative flex flex-1 overflow-hidden rounded-t-3xl"
+          style={{
+            minHeight: "240px",
+            background: `radial-gradient(circle at 50% 40%, ${character.accentColor}33 0%, rgba(255, 255, 255, 0.3) 70%)`,
+          }}
         >
           <VrmViewer
             url={`/vrm/${character.id}.vrm`}
@@ -96,64 +100,60 @@ export function Chat() {
           />
 
           {/* Top-left character info */}
-          <div className="absolute left-4 top-4 flex flex-col gap-0.5">
+          <div className="absolute left-3 top-3 flex flex-col gap-1.5">
             <Link
               to="/"
-              className="mb-2 text-[10px] tracking-[0.2em] text-text-secondary hover:text-gold-400"
+              className="glass-strong flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-semibold text-text-primary hover:bg-white/80"
             >
-              ← BACK
+              <span>←</span>
+              <span>Back</span>
             </Link>
-            <div className="flex items-baseline gap-2">
-              <span className="text-lg font-light tracking-[0.15em] text-text-primary md:text-xl">
-                {character.name}
-              </span>
-              <JP className="text-lg text-gold-400">{character.kanji}</JP>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-text-secondary">
-              <JP>{character.personality.jp}</JP>
-              <span className="text-text-muted">·</span>
-              <span>{character.personality.en}</span>
+            <div className="glass-strong rounded-2xl px-3 py-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-bold tracking-tight text-text-primary md:text-2xl">
+                  {character.name}
+                </span>
+                <JP className="text-lg font-semibold text-accent-500">
+                  {character.kanji}
+                </JP>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium">
+                <JP className="text-text-secondary">{character.personality.jp}</JP>
+                <span className="text-text-muted">·</span>
+                <span className="text-text-secondary">{character.personality.en}</span>
+              </div>
             </div>
           </div>
 
-          {/* Top-right online status */}
-          <div className="absolute right-4 top-4 flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
-            <span className="text-[10px] tracking-[0.2em] text-teal-400">
-              ONLINE
+          {/* Online status */}
+          <div className="glass-strong absolute right-3 top-3 flex items-center gap-1.5 rounded-full px-3 py-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inset-0 animate-ping rounded-full bg-emotion-happy opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emotion-happy" />
             </span>
+            <span className="text-[11px] font-semibold text-text-primary">Online</span>
           </div>
         </div>
 
-        {/* Emotion strip */}
-        <div className="flex items-center justify-between border-t border-base-600 bg-base-800/50 px-4 py-2 text-xs">
+        {/* Status strip */}
+        <div className="flex items-center justify-between border-t border-white/40 px-4 py-2.5 text-xs font-medium">
           <div className="flex items-center gap-2">
             <JP className="text-text-secondary">感情</JP>
             <span className="text-text-muted">·</span>
-            <span className="text-emotion-happy">happy</span>
+            <span className="font-semibold text-emotion-happy">Happy</span>
             <span className="text-text-muted">·</span>
             <span className="text-text-secondary">idle</span>
           </div>
           <div className="hidden items-center gap-2 md:flex">
-            <span className="text-[10px] tracking-[0.2em] text-text-muted">
-              VOICE
-            </span>
+            <span className="text-[10px] font-semibold text-text-muted">Voice</span>
             <span className="text-text-secondary">{character.voice}</span>
           </div>
         </div>
       </section>
 
       {/* Chat panel */}
-      <section className="relative flex flex-1 flex-col overflow-hidden md:border md:border-base-600">
-        <span className="pointer-events-none absolute left-0 top-0 hidden h-4 w-4 border-l border-t border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute right-0 top-0 hidden h-4 w-4 border-r border-t border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute bottom-0 left-0 hidden h-4 w-4 border-b border-l border-gold-400/60 md:block" />
-        <span className="pointer-events-none absolute bottom-0 right-0 hidden h-4 w-4 border-b border-r border-gold-400/60 md:block" />
-
-        <div
-          ref={scrollRef}
-          className="flex-1 overflow-y-auto px-4 py-4 md:px-6"
-        >
+      <section className="glass iridescent relative flex flex-1 flex-col overflow-hidden">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 md:px-6">
           <div className="flex flex-col gap-4">
             {messages.map((msg) => (
               <MessageBubble
@@ -167,7 +167,7 @@ export function Chat() {
 
         <form
           onSubmit={handleSend}
-          className="border-t border-base-600 bg-base-800/40 p-3 md:p-4"
+          className="border-t border-white/40 p-3 md:p-4"
         >
           <div className="flex items-center gap-2">
             <input
@@ -175,18 +175,18 @@ export function Chat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message…"
-              className="flex-1 border border-base-500 bg-base-900/60 px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-gold-400 focus:outline-none"
+              className="glass-subtle flex-1 rounded-full px-4 py-2.5 text-sm font-medium text-text-primary placeholder:text-text-muted focus:bg-white/60 focus:outline-none focus:ring-2 focus:ring-accent-300/40"
             />
             <button
               type="submit"
-              className="border border-gold-400 bg-transparent px-4 py-2.5 text-xs tracking-[0.2em] text-gold-400 transition-colors hover:bg-gold-400 hover:text-base-900"
+              className="btn-primary rounded-full px-5 py-2.5 text-xs font-semibold tracking-tight"
             >
-              SEND
+              Send
             </button>
           </div>
-          <div className="mt-2 flex items-center justify-between text-[10px] tracking-[0.15em] text-text-muted">
+          <div className="mt-2 flex items-center justify-between text-[10px] font-semibold text-text-muted">
             <span>
-              <JP>送信</JP> · ENTER to send
+              <JP>送信</JP> · Enter to send
             </span>
             <span>50 / day · 0 used</span>
           </div>
@@ -208,27 +208,27 @@ function MessageBubble({
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[80%] flex flex-col gap-1 ${
+        className={`flex max-w-[80%] flex-col gap-1 ${
           isUser ? "items-end" : "items-start"
         }`}
       >
         <div
           className={`px-4 py-2.5 text-sm leading-relaxed ${
             isUser
-              ? "border border-base-500 bg-base-700/60 text-text-primary"
-              : "border bg-base-800/60 text-text-primary"
+              ? "btn-primary rounded-3xl rounded-br-md"
+              : "glass-strong rounded-3xl rounded-bl-md text-text-primary"
           }`}
           style={
             !isUser
-              ? { borderColor: `${accentColor}66` }
+              ? { boxShadow: `0 4px 16px ${accentColor}22, inset 0 1px 0 0 rgba(255,255,255,0.6)` }
               : undefined
           }
         >
           {message.text}
         </div>
         {!isUser && message.emotion && (
-          <span className="text-[10px] tracking-[0.2em] text-text-muted">
-            [ANIM: {message.emotion}]
+          <span className="ml-2 text-[10px] font-semibold text-text-muted">
+            · {message.emotion}
           </span>
         )}
       </div>

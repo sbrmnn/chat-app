@@ -10,15 +10,14 @@ export function Home() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-12">
-      {/* Page title */}
-      <div className="mb-8 flex flex-col items-start gap-2">
-        <JP className="text-2xl font-light text-gold-400 md:text-3xl">
+      <div className="mb-10 flex flex-col items-start gap-2">
+        <JP className="text-base font-semibold text-text-secondary">
           キャラクター
         </JP>
-        <h1 className="text-3xl font-light tracking-[0.05em] text-text-primary md:text-4xl">
+        <h1 className="text-5xl font-bold tracking-tight text-text-primary md:text-6xl">
           Choose a companion
         </h1>
-        <p className="text-sm text-text-secondary">
+        <p className="text-base font-medium text-text-secondary">
           Each character has their own personality, voice, and way of speaking.
         </p>
       </div>
@@ -27,36 +26,45 @@ export function Home() {
 
       <Divider en="Characters" jp="キャラクター一覧" />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
         {rest.map((character) => (
           <CharacterCard key={character.id} character={character} />
         ))}
       </div>
 
-      <Divider en="About" jp="このアプリについて" />
+      <Divider en="Features" jp="機能" />
 
-      <div className="grid grid-cols-1 gap-6 text-sm text-text-secondary md:grid-cols-3">
-        <div className="flex flex-col gap-2 border border-base-600 p-5">
-          <JP className="text-xs text-gold-400">声で話す</JP>
-          <h3 className="text-base text-text-primary">Voice conversations</h3>
-          <p className="leading-relaxed">
-            Each character has a distinct voice. Hear them respond in real time.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border border-base-600 p-5">
-          <JP className="text-xs text-gold-400">表情豊か</JP>
-          <h3 className="text-base text-text-primary">Expressive avatars</h3>
-          <p className="leading-relaxed">
-            3D VRM models that react with gesture and emotion to your words.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border border-base-600 p-5">
-          <JP className="text-xs text-gold-400">個性</JP>
-          <h3 className="text-base text-text-primary">Real personality</h3>
-          <p className="leading-relaxed">
-            Each character has their own perspective, taste, and way of being.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        {[
+          {
+            jp: "声で話す",
+            en: "Voice chat",
+            body: "Each character has a distinct voice. Hear them respond in real time.",
+          },
+          {
+            jp: "表情豊か",
+            en: "Expressive avatars",
+            body: "3D VRM models that react with gesture and emotion to your words.",
+          },
+          {
+            jp: "個性",
+            en: "Real personality",
+            body: "Each character has their own perspective, taste, and way of being.",
+          },
+        ].map((feature) => (
+          <div
+            key={feature.en}
+            className="glass iridescent flex flex-col gap-2 p-6"
+          >
+            <JP className="text-xs font-semibold text-accent-500">{feature.jp}</JP>
+            <h3 className="text-lg font-semibold tracking-tight text-text-primary">
+              {feature.en}
+            </h3>
+            <p className="text-sm leading-relaxed text-text-secondary">
+              {feature.body}
+            </p>
+          </div>
+        ))}
       </div>
     </main>
   )

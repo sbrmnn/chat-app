@@ -10,107 +10,119 @@ export function CharacterCard({ character }: Props) {
   return (
     <Link
       to={`/chat/${character.id}`}
-      className="group relative flex flex-col overflow-hidden border border-base-600 bg-base-800/60 transition-all hover:border-gold-400/60 hover:bg-base-700/60"
+      className="chapter-card ornate-corner group relative flex flex-col overflow-hidden"
     >
-      {/* Corner marks */}
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b border-l border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-gold-400/50" />
-
-      {/* VRM preview placeholder */}
+      {/* Avatar — like a character portrait card */}
       <div
-        className="relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b border-base-600 bg-gradient-to-b from-base-700 to-base-900"
+        className="vignette relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b border-rose-500/30"
         style={{
-          backgroundImage: `radial-gradient(circle at 50% 30%, ${character.accentColor}22, transparent 70%)`,
+          background: `linear-gradient(180deg, ${character.accentColor}33 0%, var(--color-night-900) 100%)`,
         }}
       >
         <span
-          className="text-[140px] font-light leading-none opacity-30 transition-opacity group-hover:opacity-50"
+          className="text-[150px] font-light leading-none transition-all group-hover:scale-110"
           translate="no"
           lang="ja"
-          style={{ color: character.accentColor }}
+          style={{
+            fontFamily: "var(--font-display)",
+            color: character.accentColor,
+            textShadow: `0 0 32px ${character.accentColor}88, 0 0 80px ${character.accentColor}44`,
+          }}
         >
           {character.kanji}
         </span>
 
-        {/* Online indicator */}
+        {/* Online seal */}
         {character.online && (
-          <div className="absolute right-3 top-3 flex items-center gap-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inset-0 animate-ping rounded-full bg-teal-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-teal-400">
-              ONLINE
+          <div className="absolute right-3 top-3 flex items-center gap-1.5 border border-gold-400/60 bg-night-900/80 px-2 py-0.5 backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-300 shadow-[0_0_4px_var(--color-gold-300)]" />
+            <span
+              className="text-[9px] italic tracking-wider text-gold-300"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              available
             </span>
           </div>
         )}
 
-        {/* Affinity stars */}
-        <div className="absolute bottom-3 left-3 flex gap-0.5 text-[10px] text-gold-400">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className={i < character.affinity ? "" : "opacity-25"}>
-              ★
-            </span>
-          ))}
+        {/* Affinity hearts */}
+        <div className="absolute bottom-3 left-3 flex items-center gap-1 border border-rose-500/40 bg-night-900/80 px-2 py-0.5 backdrop-blur">
+          <span className="text-rose-400">♥</span>
+          <span
+            className="text-xs italic tracking-wider text-rose-300"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {character.affinity}/5
+          </span>
         </div>
       </div>
 
       {/* Card body */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        {/* Name */}
+      <div className="flex flex-1 flex-col gap-3 p-5">
+        {/* Name plate */}
         <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-medium tracking-[0.15em] text-text-primary">
-            {character.name}
+          <h3
+            className="text-glow-rose text-3xl italic tracking-wide text-rose-300"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {character.name.toLowerCase()}
           </h3>
-          <JP className="text-base text-gold-400">{character.kanji}</JP>
+          <JP className="text-2xl text-gold-300">{character.kanji}</JP>
         </div>
 
-        {/* Personality */}
-        <div className="flex items-baseline gap-2 text-xs">
-          <JP className="text-text-secondary">{character.personality.jp}</JP>
-          <span className="text-text-muted">·</span>
-          <span className="text-text-secondary">{character.personality.en}</span>
+        {/* Personality — quote */}
+        <div className="flex items-baseline gap-2 text-sm">
+          <JP className="text-gold-300">{character.personality.jp}</JP>
+          <span className="text-rose-500">·</span>
+          <span
+            className="italic text-text-secondary"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {character.personality.en}
+          </span>
         </div>
 
-        {/* Trait badges */}
+        {/* Trait labels */}
         <div className="flex flex-wrap gap-1.5">
           {character.traits.map((trait) => (
             <span
               key={trait.en}
-              className="border border-base-500 px-2 py-0.5 text-[10px] tracking-wider text-text-secondary"
+              className="border border-rose-500/30 px-2 py-0.5 text-[10px] tracking-wider text-text-secondary"
+              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
             >
-              <JP>{trait.jp}</JP>
-              <span className="mx-1 opacity-40">·</span>
+              <JP className="not-italic">{trait.jp}</JP>
+              <span className="mx-1 opacity-50">·</span>
               {trait.en}
             </span>
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-gold-400/30 via-base-500 to-transparent" />
-
-        {/* Latest message */}
-        <div className="flex flex-col gap-1 text-xs leading-relaxed">
-          <JP className="text-text-secondary">
+        {/* Latest message — italicized quote */}
+        <div className="border-l-2 border-rose-400/60 bg-night-900/40 px-3 py-2 text-sm leading-relaxed">
+          <JP className="block text-text-primary">
             「{character.latestMessage.jp}」
           </JP>
-          <span className="text-text-muted italic">
+          <span
+            className="block italic text-text-secondary"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             "{character.latestMessage.en}"
           </span>
         </div>
 
         {/* CTA */}
-        <div className="mt-auto flex items-center justify-between border-t border-base-600 pt-3">
-          <span className="text-[10px] tracking-[0.2em] text-text-muted">
-            {character.voice.toUpperCase()}
+        <div className="mt-auto flex items-center justify-between border-t border-rose-500/20 pt-3">
+          <span
+            className="text-[11px] italic tracking-wider text-text-muted"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {character.voice}
           </span>
-          <span className="flex items-center gap-1.5 text-[11px] tracking-[0.25em] text-gold-400 transition-colors group-hover:text-gold-300">
-            CHAT
-            <span className="transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
+          <span
+            className="vn-choice px-4 py-1.5 text-xs italic tracking-wider"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            ▸ Begin chapter
           </span>
         </div>
       </div>

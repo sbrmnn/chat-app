@@ -63,12 +63,12 @@ export function VrmViewer({
     renderer.outputColorSpace = THREE.SRGBColorSpace
     container.appendChild(renderer.domElement)
 
-    // Lighting — soft ambient + key light + warm gold rim
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7))
-    const key = new THREE.DirectionalLight(0xffffff, 0.9)
+    // Lighting — moody cinematic with rose key + gold rim
+    scene.add(new THREE.AmbientLight(0x6e6884, 0.5))
+    const key = new THREE.DirectionalLight(0xf3c4cf, 0.85)
     key.position.set(1, 2, 1)
     scene.add(key)
-    const rim = new THREE.DirectionalLight(0xc9a96e, 0.4)
+    const rim = new THREE.DirectionalLight(0xf0d990, 0.5)
     rim.position.set(-1, 1, -1)
     scene.add(rim)
 
@@ -173,18 +173,20 @@ export function VrmViewer({
 
           {state === "loading" && (
             <div className="absolute bottom-8 flex flex-col items-center gap-2">
-              <div className="h-px w-32 overflow-hidden bg-base-700">
+              <div className="h-px w-40 overflow-hidden bg-rose-500/20">
                 <div
                   className="h-full transition-all duration-200"
                   style={{
                     width: `${progress}%`,
-                    backgroundColor: accentColor,
+                    backgroundColor: "var(--color-rose-400)",
+                    boxShadow: "0 0 8px var(--color-rose-400)",
                   }}
                 />
               </div>
-              <div className="flex items-center gap-2 text-[10px] tracking-[0.2em] text-text-secondary">
-                <JP>読み込み中</JP>
-                <span className="text-text-muted">·</span>
+              <div className="flex items-center gap-2 text-[11px] italic tracking-wider text-rose-300"
+                   style={{ fontFamily: "var(--font-display)" }}>
+                <JP className="not-italic">読み込み中</JP>
+                <span className="text-rose-500/60">·</span>
                 <span>{progress}%</span>
               </div>
             </div>
@@ -192,11 +194,10 @@ export function VrmViewer({
 
           {state === "error" && (
             <div className="absolute bottom-8 flex flex-col items-center gap-1 text-center">
-              <JP className="text-xs text-text-secondary">
-                読み込みに失敗しました
-              </JP>
-              <span className="text-[10px] tracking-[0.15em] text-text-muted">
-                Failed to load {characterName}'s model
+              <JP className="text-xs text-rose-300">読み込みに失敗しました</JP>
+              <span className="text-[10px] italic tracking-wider text-text-muted"
+                    style={{ fontFamily: "var(--font-display)" }}>
+                Failed to load {characterName}'s scene
               </span>
             </div>
           )}

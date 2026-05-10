@@ -10,18 +10,24 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-base-700/60 bg-base-900/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b-2 border-dashed border-sage-300 bg-cream-50/80 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <Link to="/" className="group flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center border border-gold-400/60 text-gold-400 transition-colors group-hover:border-gold-300 group-hover:text-gold-300">
-            <JP className="text-lg">話</JP>
+          <div className="float flex h-11 w-11 items-center justify-center rounded-full bg-sage-300 text-cream-50 shadow-md shadow-sage-500/30">
+            <JP className="text-xl font-semibold">話</JP>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-medium tracking-[0.2em] text-text-primary">
-              CHAT-APP
+            <span
+              className="text-3xl text-sage-600"
+              style={{
+                fontFamily: "var(--font-display)",
+                lineHeight: "1",
+              }}
+            >
+              chat-app
             </span>
-            <JP className="text-[10px] text-text-secondary">
-              キャラクターチャット
+            <JP className="text-[10px] font-medium text-rose-400">
+              キャラクターと話そう
             </JP>
           </div>
         </Link>
@@ -33,14 +39,16 @@ export function Header() {
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex flex-col items-center px-3 py-1.5 text-[11px] tracking-[0.2em] transition-colors ${
+                className={`flex flex-col items-center rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                   active
-                    ? "text-gold-400"
-                    : "text-text-secondary hover:text-text-primary"
+                    ? "bg-sage-300 text-cream-50 shadow-sm"
+                    : "text-text-secondary hover:bg-cream-100"
                 }`}
               >
-                <span>{item.en.toUpperCase()}</span>
-                <JP className="text-[9px] opacity-60">{item.jp}</JP>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: "1.1em" }}>
+                  {item.en.toLowerCase()}
+                </span>
+                <JP className="text-[9px] opacity-80">{item.jp}</JP>
               </Link>
             )
           })}

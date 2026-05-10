@@ -6,111 +6,141 @@ type Props = {
   character: Character
 }
 
+const NATURE_ACCENT: Record<string, string> = {
+  saki: "🌻",
+  yuki: "❄",
+  hana: "🌸",
+  aoi: "🌿",
+  koharu: "🌷",
+  mei: "🍃",
+}
+
 export function CharacterCard({ character }: Props) {
+  const accent = NATURE_ACCENT[character.id] ?? "✿"
+
   return (
     <Link
       to={`/chat/${character.id}`}
-      className="group relative flex flex-col overflow-hidden border border-base-600 bg-base-800/60 transition-all hover:border-gold-400/60 hover:bg-base-700/60"
+      className="watercolor-card group relative flex flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(74,63,58,0.12)]"
     >
-      {/* Corner marks */}
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r border-t border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b border-l border-gold-400/50" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-gold-400/50" />
-
-      {/* VRM preview placeholder */}
+      {/* Avatar — soft watercolor wash */}
       <div
-        className="relative flex aspect-[3/4] items-center justify-center overflow-hidden border-b border-base-600 bg-gradient-to-b from-base-700 to-base-900"
+        className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-t-2xl"
         style={{
-          backgroundImage: `radial-gradient(circle at 50% 30%, ${character.accentColor}22, transparent 70%)`,
+          background: `radial-gradient(ellipse at 50% 30%, ${character.accentColor}55 0%, var(--color-cream-50) 75%)`,
         }}
       >
+        {/* Floating cloud at top */}
         <span
-          className="text-[140px] font-light leading-none opacity-30 transition-opacity group-hover:opacity-50"
+          className="absolute left-4 top-4 text-3xl float opacity-90"
+          style={{ animationDelay: "0.4s" }}
+        >
+          ☁
+        </span>
+
+        {/* Nature accent — top-right */}
+        <span
+          className="absolute right-4 top-6 text-2xl sway opacity-90"
+          style={{ animationDelay: "0.7s" }}
+        >
+          {accent}
+        </span>
+
+        <span
+          className="text-[150px] leading-none transition-transform group-hover:scale-105"
           translate="no"
           lang="ja"
-          style={{ color: character.accentColor }}
+          style={{
+            fontFamily: "var(--font-display)",
+            color: character.accentColor,
+            textShadow: `0 4px 16px ${character.accentColor}44`,
+          }}
         >
           {character.kanji}
         </span>
 
-        {/* Online indicator */}
+        {/* Online — soft sage badge */}
         {character.online && (
-          <div className="absolute right-3 top-3 flex items-center gap-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inset-0 animate-ping rounded-full bg-teal-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-teal-400">
-              ONLINE
+          <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full border border-sage-400 bg-cream-50/90 px-2.5 py-1 backdrop-blur">
+            <span className="h-2 w-2 rounded-full bg-sage-500" />
+            <span className="text-[10px] font-semibold tracking-wide text-sage-600">
+              online
             </span>
           </div>
         )}
 
-        {/* Affinity stars */}
-        <div className="absolute bottom-3 left-3 flex gap-0.5 text-[10px] text-gold-400">
+        {/* Affinity — flower petals */}
+        <div className="absolute bottom-3 left-3 flex items-center gap-0.5 rounded-full border border-rose-300 bg-cream-50/90 px-2.5 py-1 backdrop-blur">
           {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className={i < character.affinity ? "" : "opacity-25"}>
-              ★
+            <span
+              key={i}
+              className={`text-xs ${
+                i < character.affinity ? "text-rose-400" : "text-rose-300/40"
+              }`}
+            >
+              ❀
             </span>
           ))}
         </div>
       </div>
 
       {/* Card body */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="flex flex-1 flex-col gap-3 p-5">
         {/* Name */}
         <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-medium tracking-[0.15em] text-text-primary">
-            {character.name}
+          <h3
+            className="text-3xl text-sage-600"
+            style={{ fontFamily: "var(--font-display)", lineHeight: "1" }}
+          >
+            {character.name.toLowerCase()}
           </h3>
-          <JP className="text-base text-gold-400">{character.kanji}</JP>
+          <JP className="text-2xl font-semibold text-rose-400">
+            {character.kanji}
+          </JP>
         </div>
 
         {/* Personality */}
-        <div className="flex items-baseline gap-2 text-xs">
-          <JP className="text-text-secondary">{character.personality.jp}</JP>
+        <div className="flex items-baseline gap-2 text-sm">
+          <JP className="font-medium text-sage-500">{character.personality.jp}</JP>
           <span className="text-text-muted">·</span>
           <span className="text-text-secondary">{character.personality.en}</span>
         </div>
 
-        {/* Trait badges */}
+        {/* Trait pills */}
         <div className="flex flex-wrap gap-1.5">
           {character.traits.map((trait) => (
             <span
               key={trait.en}
-              className="border border-base-500 px-2 py-0.5 text-[10px] tracking-wider text-text-secondary"
+              className="rounded-full border border-sage-300 bg-cream-100/60 px-2.5 py-0.5 text-[10px] font-medium text-sage-600"
             >
               <JP>{trait.jp}</JP>
-              <span className="mx-1 opacity-40">·</span>
+              <span className="mx-1 opacity-50">·</span>
               {trait.en}
             </span>
           ))}
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-gold-400/30 via-base-500 to-transparent" />
-
-        {/* Latest message */}
-        <div className="flex flex-col gap-1 text-xs leading-relaxed">
-          <JP className="text-text-secondary">
-            「{character.latestMessage.jp}」
+        {/* Latest message — soft cloud bubble */}
+        <div className="rounded-[20px] rounded-bl-[6px] border border-sky-300 bg-sky-200/40 px-3 py-2.5 text-sm leading-relaxed">
+          <JP className="block text-text-primary">
+            {character.latestMessage.jp}
           </JP>
-          <span className="text-text-muted italic">
+          <span className="block italic text-text-secondary"
+                style={{ fontFamily: "var(--font-display)", fontSize: "0.95em" }}>
             "{character.latestMessage.en}"
           </span>
         </div>
 
         {/* CTA */}
-        <div className="mt-auto flex items-center justify-between border-t border-base-600 pt-3">
-          <span className="text-[10px] tracking-[0.2em] text-text-muted">
-            {character.voice.toUpperCase()}
+        <div className="mt-auto flex items-center justify-between border-t border-dashed border-sage-300 pt-3">
+          <span className="text-[10px] font-semibold tracking-wide text-text-muted">
+            {character.voice}
           </span>
-          <span className="flex items-center gap-1.5 text-[11px] tracking-[0.25em] text-gold-400 transition-colors group-hover:text-gold-300">
-            CHAT
-            <span className="transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
+          <span
+            className="flex items-center gap-1.5 text-lg text-sage-600 transition-transform group-hover:translate-x-1"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            chat ✿
           </span>
         </div>
       </div>

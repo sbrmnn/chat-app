@@ -1,45 +1,67 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base layers — deep navy, not flat black */
-  --color-base-900: #0a0d1a;
-  --color-base-800: #0f1428;
-  --color-base-700: #141933;
-  --color-base-600: #1a2040;
-  --color-base-500: #232a4d;
+  /* Cream — warm paper-like base */
+  --color-cream-50: #faf3e0;
+  --color-cream-100: #f4ebd0;
+  --color-cream-200: #ecdfb6;
+  --color-cream-300: #e0d09a;
 
-  /* Gold — primary accent (borders, dividers, active states) */
-  --color-gold-200: #ede0c4;
-  --color-gold-300: #dfc28e;
-  --color-gold-400: #c9a96e;
-  --color-gold-500: #a88a52;
+  /* Sage green — primary nature accent */
+  --color-sage-200: #d2e0c8;
+  --color-sage-300: #a8c4a2;
+  --color-sage-400: #7a9d7a;
+  --color-sage-500: #5a7d5a;
+  --color-sage-600: #3e5e44;
 
-  /* Teal — secondary accent (emotion, voice, online) */
-  --color-teal-300: #a3ddd9;
-  --color-teal-400: #7ecec4;
-  --color-teal-500: #5aa8a0;
+  /* Sky blue — secondary, like a Ghibli sky */
+  --color-sky-200: #d4e3ed;
+  --color-sky-300: #a8c8e0;
+  --color-sky-400: #7aa8c5;
+  --color-sky-500: #557f9c;
+
+  /* Dusty pink — accent, like sunset clouds */
+  --color-rose-200: #f0d2cc;
+  --color-rose-300: #e8b4b4;
+  --color-rose-400: #d99090;
+  --color-rose-500: #b76a6a;
+
+  /* Wood / earth */
+  --color-wood-400: #b89868;
+  --color-wood-500: #8b6f47;
+  --color-wood-600: #6b5535;
+
+  /* Sun yellow */
+  --color-sun-300: #f0d985;
+  --color-sun-400: #e8c87a;
+  --color-sun-500: #c2a050;
+
+  /* Ink — soft black, never harsh */
+  --color-ink-700: #4a3f3a;
+  --color-ink-800: #3a2f2a;
+  --color-ink-900: #2d2520;
 
   /* Text */
-  --color-text-primary: #f0ede8;
-  --color-text-secondary: #8a8fa8;
-  --color-text-muted: #4a5068;
+  --color-text-primary: #3a2f2a;
+  --color-text-secondary: #6b5e54;
+  --color-text-muted: #9d8e80;
 
-  /* Emotion semantic colors */
-  --color-emotion-happy: #7ecec4;
-  --color-emotion-angry: #e07a6a;
-  --color-emotion-sad: #7a9ac9;
-  --color-emotion-surprised: #c9a96e;
-  --color-emotion-neutral: #8a8fa8;
+  /* Emotion */
+  --color-emotion-happy: #e8c87a;
+  --color-emotion-angry: #d99090;
+  --color-emotion-sad: #7aa8c5;
+  --color-emotion-surprised: #b76a6a;
+  --color-emotion-neutral: #6b5e54;
 
-  /* Typography */
-  --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Noto Serif JP", ui-serif, Georgia, serif;
+  /* Typography — handwritten feel + clean body */
+  --font-sans: "Klee One", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Caveat", "Klee One", "Noto Sans JP", cursive;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html {
-    background-color: var(--color-base-900);
+    background-color: var(--color-cream-50);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -49,20 +71,34 @@
   body {
     margin: 0;
     min-height: 100svh;
+    background:
+      /* Watercolor bloom — soft sky */
+      radial-gradient(ellipse 800px 600px at 80% 5%, rgba(168, 200, 224, 0.45) 0%, transparent 70%),
+      /* Watercolor bloom — sage */
+      radial-gradient(ellipse 700px 500px at 10% 90%, rgba(168, 196, 162, 0.35) 0%, transparent 70%),
+      /* Watercolor bloom — pink sunset */
+      radial-gradient(ellipse 500px 400px at 60% 80%, rgba(232, 180, 180, 0.25) 0%, transparent 70%),
+      /* Subtle paper grain */
+      radial-gradient(circle at 1px 1px, rgba(74, 63, 58, 0.03) 0.4px, transparent 0),
+      var(--color-cream-50);
+    background-size: 100%, 100%, 100%, 4px 4px, 100%;
+    background-attachment: fixed;
   }
 
-  /* Subtle texture on the page background */
+  /* Drifting clouds at the very top — pure CSS */
   body::before {
     content: "";
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
     pointer-events: none;
-    background-image: radial-gradient(
-      circle at 50% 0%,
-      rgba(201, 169, 110, 0.03) 0%,
-      transparent 50%
-    );
     z-index: 0;
+    background:
+      radial-gradient(ellipse 180px 60px at 15% 30%, rgba(255, 255, 255, 0.7) 0%, transparent 60%),
+      radial-gradient(ellipse 240px 70px at 50% 50%, rgba(255, 255, 255, 0.55) 0%, transparent 60%),
+      radial-gradient(ellipse 200px 60px at 85% 35%, rgba(255, 255, 255, 0.6) 0%, transparent 60%);
   }
 
   #root {
@@ -70,37 +106,129 @@
     z-index: 1;
   }
 
-  /* Japanese decorative text — slightly looser tracking, lighter weight */
   [lang="ja"] {
-    letter-spacing: 0.05em;
-    font-weight: 300;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-cream-100);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-sage-300);
+    border-radius: 999px;
+    border: 2px solid var(--color-cream-100);
   }
 }
 
-/* Decorative corner marks utility */
 @layer utilities {
-  .corner-marks {
+  /* Watercolor-bloom card — hand-drawn feel */
+  .watercolor-card {
+    background: rgba(250, 243, 224, 0.85);
+    backdrop-filter: blur(2px);
+    border: 1.5px solid var(--color-sage-300);
+    border-radius: 18px;
+    box-shadow:
+      0 4px 0 -1px var(--color-sage-200),
+      0 8px 24px rgba(74, 63, 58, 0.08);
+  }
+
+  .watercolor-card-pink {
+    background: rgba(250, 243, 224, 0.85);
+    border: 1.5px solid var(--color-rose-300);
+    border-radius: 18px;
+    box-shadow:
+      0 4px 0 -1px var(--color-rose-200),
+      0 8px 24px rgba(74, 63, 58, 0.08);
+  }
+
+  /* Soft watercolor blob — for accents */
+  .watercolor-blob {
+    background: radial-gradient(
+      ellipse at center,
+      currentColor 0%,
+      transparent 70%
+    );
+    filter: blur(0.5px);
+  }
+
+  /* Sketchy dashed border (hand-drawn pencil feel) */
+  .sketchy {
+    border-style: dashed;
+    border-width: 1.5px;
+  }
+
+  /* Hand-drawn underline */
+  .hand-underline {
+    background-image: linear-gradient(
+      90deg,
+      transparent 5%,
+      currentColor 5%,
+      currentColor 95%,
+      transparent 95%
+    );
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    padding-bottom: 4px;
+  }
+
+  /* Friendly button — wood/earth */
+  .btn-earthy {
+    background: linear-gradient(
+      180deg,
+      var(--color-sage-400) 0%,
+      var(--color-sage-500) 100%
+    );
+    color: var(--color-cream-50);
+    border: 1.5px solid var(--color-sage-600);
+    border-radius: 999px;
+    box-shadow:
+      0 3px 0 0 var(--color-sage-600),
+      0 6px 16px rgba(58, 94, 68, 0.25);
+    transition: all 0.15s;
+  }
+
+  .btn-earthy:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 0 0 var(--color-sage-600),
+      0 8px 20px rgba(58, 94, 68, 0.35);
+  }
+
+  .btn-earthy:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 0 var(--color-sage-600);
+  }
+
+  /* Cloud accent shape */
+  .cloud-shape {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 100px;
     position: relative;
   }
-  .corner-marks::before,
-  .corner-marks::after {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 1px solid var(--color-gold-400);
-    opacity: 0.6;
+
+  /* Soft floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
   }
-  .corner-marks::before {
-    top: 0;
-    left: 0;
-    border-right: none;
-    border-bottom: none;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
   }
-  .corner-marks::after {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
+
+  /* Gentle sway for leaves/decorations */
+  .sway {
+    animation: sway 5s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
   }
 }

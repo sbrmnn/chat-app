@@ -15,36 +15,32 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const outDir = resolve(__dirname, "../public/avatars")
 const baseUrl = process.env.CAPTURE_BASE_URL ?? "http://localhost:5173"
 
-// Per-character config: accent color + a distinct gradient "feel" so each
-// portrait's backdrop has its own personality.
-//   bg: { cx, cy, r, opacity } — radial gradient parameters as percentages
+// Per-character config: accent color + opacity. The gradient is always
+// centered on the character's face (computed dynamically from where the
+// trimmed figure lands in the output) so it's consistent across rigs.
 const characters = [
-  // Saki — warm cheerful sunrise from the upper-left
-  { id: "saki", accent: "#e07a6a", bg: { cx: 25, cy: 25, r: 80, opacity: 0.55 } },
-  // Yuki — calm sky settling from above
-  { id: "yuki", accent: "#7a9ac9", bg: { cx: 50, cy: 15, r: 85, opacity: 0.50 } },
-  // Hana — bright energetic center bloom
-  { id: "hana", accent: "#c9a96e", bg: { cx: 50, cy: 45, r: 70, opacity: 0.55 } },
-  // Aoi — soft afternoon teal glow from the right
-  { id: "aoi", accent: "#7ecec4", bg: { cx: 75, cy: 35, r: 75, opacity: 0.50 } },
-  // Koharu — gentle warm hearth-light from the lower-left
-  { id: "koharu", accent: "#dfc28e", bg: { cx: 30, cy: 70, r: 80, opacity: 0.55 } },
-  // Mei — fresh, lifted from below
-  { id: "mei", accent: "#a3ddd9", bg: { cx: 50, cy: 80, r: 75, opacity: 0.55 } },
-  // Akira — dramatic spotlight from above, dignified
-  { id: "akira", accent: "#5a7d9a", bg: { cx: 50, cy: 20, r: 70, opacity: 0.50 } },
+  { id: "saki", accent: "#e07a6a", opacity: 0.55 },
+  { id: "yuki", accent: "#7a9ac9", opacity: 0.50 },
+  { id: "hana", accent: "#c9a96e", opacity: 0.55 },
+  { id: "aoi", accent: "#7ecec4", opacity: 0.50 },
+  { id: "koharu", accent: "#dfc28e", opacity: 0.55 },
+  { id: "mei", accent: "#a3ddd9", opacity: 0.55 },
+  { id: "akira", accent: "#5a7d9a", opacity: 0.50 },
 ]
 
 const OUTPUT_SIZE = 800
 // Cream paper base — matches the Ghibli design's --color-cream-50.
 const PAPER_COLOR = "#faf3e0"
 
-/** Build a soft radial gradient using the character's accent + bg config. */
-function backgroundSvg(accent, bg) {
+/**
+ * Build a radial gradient SVG centered on the character's face position.
+ * cxPct/cyPct are percentages within the OUTPUT_SIZE square.
+ */
+function backgroundSvg(accent, opacity, cxPct, cyPct) {
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${OUTPUT_SIZE}" height="${OUTPUT_SIZE}">
   <defs>
-    <radialGradient id="g" cx="${bg.cx}%" cy="${bg.cy}%" r="${bg.r}%">
-      <stop offset="0%" stop-color="${accent}" stop-opacity="${bg.opacity}" />
+    <radialGradient id="g" cx="${cxPct}%" cy="${cyPct}%" r="75%">
+      <stop offset="0%" stop-color="${accent}" stop-opacity="${opacity}" />
       <stop offset="75%" stop-color="${PAPER_COLOR}" stop-opacity="0" />
     </radialGradient>
   </defs>
@@ -63,7 +59,7 @@ async function main() {
   })
   const page = await context.newPage()
 
-  for (const { id, accent, bg } of characters) {
+  for (const { id, accent, opacity } of characters) {
     process.stdout.write(`  ${id}.jpg ... `)
     const url = `${baseUrl}/capture/${id}`
     await page.goto(url, { waitUntil: "domcontentloaded" })
@@ -130,8 +126,16 @@ async function main() {
     const left = Math.round((OUTPUT_SIZE - fitW) / 2)
     const top = Math.round((OUTPUT_SIZE - fitH) * 0.18)
 
+    // Center the gradient on the character's face in the output:
+    //   x = horizontal center of the placed character
+    //   y = upper portion (face zone) — about 22% down inside the figure
+    const faceX = left + fitW / 2
+    const faceY = top + fitH * 0.22
+    const cxPct = (faceX / OUTPUT_SIZE) * 100
+    const cyPct = (faceY / OUTPUT_SIZE) * 100
+
     const outPath = resolve(outDir, `${id}.jpg`)
-    await sharp(backgroundSvg(accent, bg))
+    await sharp(backgroundSvg(accent, opacity, cxPct, cyPct))
       .composite([{ input: resized, left, top }])
       .jpeg({ quality: 88, mozjpeg: true })
       .toFile(outPath)

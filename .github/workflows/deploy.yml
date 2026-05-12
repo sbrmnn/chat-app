@@ -1,0 +1,66 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build frontend
+        working-directory: frontend
+        env:
+          VITE_VRM_BASE_URL: ${{ secrets.VITE_VRM_BASE_URL }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to droplet
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: deploy
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            export PATH="$HOME/.rbenv/bin:$PATH"
+            eval "$(rbenv init -)"
+
+            cd /var/www/toonabi
+
+            # Pull latest code
+            git pull origin main
+
+            # Backend
+            cd backend
+            bundle install --without development test
+            RAILS_ENV=production bundle exec rails db:migrate
+            cd ..
+
+            # Restart app
+            sudo systemctl restart toonabi
+
+            # Update nginx config and reload
+            sudo cp /var/www/toonabi/nginx.conf /etc/nginx/sites-available/toonabi
+            sudo nginx -t
+            sudo systemctl reload nginx
+
+      - name: Copy frontend build
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: deploy
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          source: "frontend/dist/*"
+          target: "/var/www/toonabi/frontend/dist"
+          strip_components: 2
